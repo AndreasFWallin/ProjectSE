@@ -1,3 +1,6 @@
+
+""" Highest level and entrypoint of the ProjectSE / UU-game application """
+
 from projectse.player import *
 from projectse.configuration import *
 from projectse.engine_manager import *
