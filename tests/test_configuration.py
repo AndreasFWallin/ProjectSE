@@ -4,22 +4,28 @@ from projectse.configuration import ConfigurationBuilder
 
 class ConfigurationBuilderTestCase(unittest.TestCase):
 
-     def test_set_ai(self):
+    def test_set_players(self):
 
-        cb = ConfigurationBuilder()
-        cb.get_input = MagicMock(return_value=234)
-        cb.print_out = MagicMock()
+        cb = ConfigurationBuilder(MagicMock())
+        cb.get_number_input = MagicMock()
+        # Set number of total and Ai players
+        cb.get_number_input.side_effect = [8, 3]
 
-        cb.input_num_AIs()
-        print(str(cb))
-        cb.print_out.assert_not_called()
+        cb.get_char_input = MagicMock()
+        # Sets difficulty to AI players
+        cb.get_char_input.side_effect = ["H", "M", "L"]
 
-        cb.get_input.side_effect = ['yes','text',5]
-        cb.input_num_AIs()
-        cb.print_out.assert_called_with("\nError: Input must be an integer\n")
-
-
-#TODO: Add additional test where Configuration-class is Mocked and check that AIplayers are added.
+        cb.get_input = MagicMock()
+        # Sets names of AI players
+        cb.get_input.side_effect = ["Kalle", "Emma", "Kim", "Olle","Ken"]
+        cb.configure_players = MagicMock()
+        cb.query_players()
+        arg, kwargs = cb.configure_players.call_args
+        players_list = arg[0]
+        player_names = ["AIPlayer1", "AIPlayer2", "AIPlayer3", "Kalle", "Emma", "Kim", "Olle","Ken"]
+        for player,name in zip(players_list, player_names):
+            print(str(player)+" name:"+str(name))
+            self.assertEqual(player.name,name)
 
 if __name__ == '__main__':
     unittest.main()

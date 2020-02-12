@@ -1,7 +1,10 @@
 class Player:
     """ Human Player for the UU-game"""
-    pass
+    def __init__(self,name):
+        self.name = name
 
 class AIPlayer(Player):
     """ Player controlled by a computer """
-    pass
+    def __init__(self, name, difficulty):
+        self.difficulty = difficulty
+        super().__init__(name)
