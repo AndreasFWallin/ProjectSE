@@ -14,19 +14,19 @@ class Configuration:
 
 class ConfigurationBuilder:
     """ Responsible for collecting info while creating the Configuration object """
-    def __init__(self, cfg: Configuration):
-        self.cfg = cfg
+    def __init__(self):
+        self.cfg = Configuration()
 
     def get_input(self, msg):
         return input(msg)
 
     def get_number_input(self, msg, min, max):
         err_msg = "\nError: Input must be an integer between {}-{} ".format(min,max)
-        print("get num input")
+        #print("get num input")
         while True:
             try:
                 x = int(self.get_input(msg))
-                print("num inp:"+str(x))
+                #print("num inp:"+str(x))
                 if x in range(min, max+1):
                     return x
                 else:
@@ -52,7 +52,7 @@ class ConfigurationBuilder:
     def parse_difficulty(self, diff_str):
         diffmap = {"H":AIDifficulty.hi, "L":AIDifficulty.low, "M":AIDifficulty.med}
         value = diffmap.get(diff_str)
-        print("diff str key:{} value:{}".format(diff_str,value))
+        #print("diff str key:{} value:{}".format(diff_str,value))
 
         return value
 
@@ -64,7 +64,8 @@ class ConfigurationBuilder:
         player_list = []
         self.print_out("= Configuration. Player setup =")
         total_players = self.get_number_input("Select total number of players:",1,max_players)
-        num_ai_player = self.get_number_input("Select number of AI players:",0,total_players)
+        #There needs to be atleast one human player
+        num_ai_player = self.get_number_input("Select number of AI players:",0,total_players-1)
         for ai_player in range(num_ai_player):
             diff = self.get_char_input("Set difficulty for AI player #{}".format(ai_player+1), ["H", "M", "L"])
             player_list.append(AIPlayer("AIPlayer"+str(ai_player+1), self.parse_difficulty(diff)))
@@ -77,5 +78,5 @@ class ConfigurationBuilder:
 
 
     def configure_players(self,player_list):
-        self.cfg.add_players(player_list)
+        self.cfg.set_players(player_list)
 
