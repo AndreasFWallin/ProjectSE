@@ -1,6 +1,6 @@
 class TournamentScheduler:
     def __init__(self, players):
-        self.num_player=players
+        self.num_players=players
 
 
     """ get_round takes an integer (1-7) as an input and returns
