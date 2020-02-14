@@ -6,7 +6,7 @@ class TournamentScheduler:
     """ get_round takes an integer (1-7) as an input and returns
         an array with a description of a round. On the form
         of tuples representing the games"""
-    def get_round(round_num):
+    def get_round(self, round_num):
         if (self.num_players == 3):
             if (round_num == 1):
                 return [(1,2)]
