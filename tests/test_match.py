@@ -1,6 +1,3 @@
-import sys
-sys.path.insert(0, '/home/jonas/Skolarbete/Metoder/ProjectSE/')
-
 import unittest
 from projectse.round import Match
 from projectse.player import Player
