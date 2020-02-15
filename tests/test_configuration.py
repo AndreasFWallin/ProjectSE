@@ -5,8 +5,10 @@ from projectse.configuration import ConfigurationBuilder
 class ConfigurationBuilderTestCase(unittest.TestCase):
 
     def test_set_players(self):
-
-        cb = ConfigurationBuilder(MagicMock())
+        """ Simulates terminal input to create a list
+        of Players/AIplayers with difficulty and names.
+        Asserts that the list is full and with correct playernames. """
+        cb = ConfigurationBuilder()
         cb.get_number_input = MagicMock()
         # Set number of total and Ai players
         cb.get_number_input.side_effect = [8, 3]
