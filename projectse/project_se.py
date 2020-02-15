@@ -11,6 +11,7 @@ class ProjectSE:
     def __init__(self):
         self.cb = ConfigurationBuilder()
         self.t = Tournament()
+        pass
 
     def tournament_start_choice(self):
         """ Get user input to determine if to start
@@ -18,6 +19,7 @@ class ProjectSE:
         """
         A function that once called for will listen for a a T press or a Q press, when this occurs the 
         """
+        print("Welcome to the UU-game press 'T' to start or 'Q' to quit")
         while True:
             if msvcrt.kbhit():
                 key_hit = msvcrt.getch()
@@ -33,7 +35,7 @@ class ProjectSE:
 
     def start(self):
         print("Application started")
-        #TODO: keyhit doesnt work
+        self.tournament_start_choice()
         if True:
             self.cb.query_players()
         if self.tournament_start_choice() == True:
