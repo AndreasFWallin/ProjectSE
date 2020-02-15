@@ -4,12 +4,13 @@ import msvcrt
 
 from projectse.player import *
 from projectse.configuration import *
-from projectse.engine_manager import *
+from projectse.game_manager import *
 from projectse.tournament import *
 
 
 class ProjectSE:
-
+    def __init__(self):
+        # WORTHLESS TRASH
     def start(self):
         Configuration()
         print("Game started")

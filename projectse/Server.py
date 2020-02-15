@@ -5,10 +5,10 @@ import socket
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)          
   
 # Define the port on which you want to connect 
-port = 12346                
+port = 3000               
   
 # connect to the server on local computer 
-s.bind(('127.0.0.1', port)) 
+s.bind(('192.168.0.105', port)) 
 
 s.listen(5)
 while True:
