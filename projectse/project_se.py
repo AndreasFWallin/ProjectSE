@@ -1,7 +1,8 @@
 
 """ Highest level and entrypoint of the ProjectSE / UU-game application """
 import msvcrt
-
+import sys
+sys.path.insert(0,r"C:\UU\VT20\SEPM\ProjectSE")
 from projectse.player import *
 from projectse.configuration import *
 from projectse.game_manager import *
@@ -22,16 +23,15 @@ class ProjectSE:
         """
         print("Welcome to the UU-game press 'T' to start or 'Q' to quit")
         while True:
-            if msvcrt.kbhit():
-                key_hit = msvcrt.getch()
-                if (key_hit == b't' or key_hit == b'T'):
-                    return True
-                elif (key_hit == b'q' or key_hit == b'Q'):
-                    print("See you next time!")
-                    return False
-                else:
-                    print("You pressed", key_hit,
-                    "This is not a valid key, press T or Q to start or quit")
+            key_hit = input()
+            if (key_hit == 't' or key_hit == 'T'):
+                return True
+            elif (key_hit == 'q' or key_hit == 'Q'):
+                print("See you next time!")
+                return False
+            else:
+                print("You pressed", key_hit,
+                "This is not a valid key, press T or Q to start or quit")
 
     def start(self):
         print("Application started")
