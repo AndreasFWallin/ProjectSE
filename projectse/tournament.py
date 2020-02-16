@@ -13,7 +13,7 @@ class Tournament:
         self.num_players = len(self.list_players)
         self.tournament_scheduler = TournamentScheduler(self.num_players)
         self.round_num = 0
-        self.most_wins = 0
+        self.most_wins = -1
         self.most_white_wins = -1
         self.match_round = None
         self.current_round = None
@@ -83,75 +83,56 @@ class Tournament:
         if(isinstance(player1,AIPlayer) and isinstance(player2,AIPlayer)):
             if(player1.difficulty=="lo" and player2.difficulty=="lo"):
                 if(randrange(100)<50):
-                    player1.result=True
-                    player2.result=False
+                    return player1;
+
                 else:
-                    player2.result=True
-                    player1.result=False
-            
+                    return player2;
+
             elif(player1.difficulty=="lo" and player2.difficulty=="mid"):
                 if(randrange(100)<35):
-                    player1.result=True
-                    player2.result=False
+                    return player1;
                 else:
-                    player1.result=False
-                    player2.result=True
+                    return player2;
             elif(player1.difficulty=="lo"and player2.difficulty=="hi"):
                 if(randrange(100)<15):
-                    player1.result=True
-                    player2.result=False
+                    return player1;
                 else:
-                    player1.result=False
-                    player2.result=True
+                    return player2;
             elif(player1.difficulty=="mid"and player2.difficulty=="lo"):
                 if(randrange(100)<35):
-                    player1.result=False
-                    player2.result=True
+                    return player2;
                 else:
-                    player1.result=True
-                    player2.result=False
+                    return player1;
             elif(player1.difficulty=="mid"and player2.difficulty=="mid"):
                 if(randrange(100)<50):
-                    player1.result=True
-                    player2.result=False
+                    return player1;
                 else:
-                    player1.result=False
-                    player2.result=True
+                    return player2;
             elif(player1.difficulty=="mid"and player2.difficulty=="hi"):
                 if(randrange(100)<35):
-                    player1.result=True
-                    player2.result=False
+                    return player1;
                 else:
-                    player1.result=False
-                    player2.result=True
+                    return player2;
             elif(player1.difficulty=="lo"and player2.difficulty=="mid"):
                 if(randrange(100)<35):
-                    player1.result=True
-                    player2.result=False
+                    return player1;
                 else:
-                    player1.result=False
-                    player2.result=True
+                    return player2;
             elif(player1.difficulty=="hi"and player2.difficulty=="lo"):
                 if(randrange(100)<15):
-                    player1.result=False
-                    player2.result=True
+                    return player2;
                 else:
-                    player1.result=True
-                    player2.result=False
+                    return player1;
             elif(player1.difficulty=="hi"and player2.difficulty=="mid"):
                 if(randrange(100)<35):
-                    player1.result=False
-                    player2.result=True
+                    return player2;
                 else:
-                    player1.result=True
-                    player2.result=False
+                    return player1;
             elif(player1.difficulty=="hi"and player2.difficulty=="hi"):
                 if(randrange(100)<50):
-                    player1.result=True
-                    player2.result=False
+                    return player1;
                 else:
-                    player1.result=False
-                    player2.result=True
-                
+                    return player2;
+                    
 
 
