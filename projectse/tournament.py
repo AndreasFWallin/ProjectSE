@@ -1,3 +1,5 @@
+from random import randrange
+
 from projectse.player import *
 from projectse.tournament_scheduler import *
 from round import *
@@ -52,7 +54,11 @@ class Tournament:
             "as black")
             if isinstance(white, AIPlayer) and isinstance(black, AIPlayer):
                 print("AI VS AI, the winner will be determined by skill and luck")
-                # TODO add AI vs AI random selector
+                winner = self.aiplay(white, black)
+                if winner == white:
+                    winner.won_game_white()
+                else:
+                    winner.won_game() 
             else: 
                 print("PLACEHOLDER FOR ACTUAL GAME")
                 # TODO add the actual game where the match is being played
@@ -72,4 +78,80 @@ class Tournament:
         if (inp == "r" or inp == "R"):
             self.start_tournament()
             print("Reinstating the tournament")
+
+    def aiplay(self, player1,player2):
+        if(isinstance(player1,AIPlayer) and isinstance(player2,AIPlayer)):
+            if(player1.difficulty=="lo" and player2.difficulty=="lo"):
+                if(randrange(100)<50):
+                    player1.result=True
+                    player2.result=False
+                else:
+                    player2.result=True
+                    player1.result=False
+            
+            elif(player1.difficulty=="lo" and player2.difficulty=="mid"):
+                if(randrange(100)<35):
+                    player1.result=True
+                    player2.result=False
+                else:
+                    player1.result=False
+                    player2.result=True
+            elif(player1.difficulty=="lo"and player2.difficulty=="hi"):
+                if(randrange(100)<15):
+                    player1.result=True
+                    player2.result=False
+                else:
+                    player1.result=False
+                    player2.result=True
+            elif(player1.difficulty=="mid"and player2.difficulty=="lo"):
+                if(randrange(100)<35):
+                    player1.result=False
+                    player2.result=True
+                else:
+                    player1.result=True
+                    player2.result=False
+            elif(player1.difficulty=="mid"and player2.difficulty=="mid"):
+                if(randrange(100)<50):
+                    player1.result=True
+                    player2.result=False
+                else:
+                    player1.result=False
+                    player2.result=True
+            elif(player1.difficulty=="mid"and player2.difficulty=="hi"):
+                if(randrange(100)<35):
+                    player1.result=True
+                    player2.result=False
+                else:
+                    player1.result=False
+                    player2.result=True
+            elif(player1.difficulty=="lo"and player2.difficulty=="mid"):
+                if(randrange(100)<35):
+                    player1.result=True
+                    player2.result=False
+                else:
+                    player1.result=False
+                    player2.result=True
+            elif(player1.difficulty=="hi"and player2.difficulty=="lo"):
+                if(randrange(100)<15):
+                    player1.result=False
+                    player2.result=True
+                else:
+                    player1.result=True
+                    player2.result=False
+            elif(player1.difficulty=="hi"and player2.difficulty=="mid"):
+                if(randrange(100)<35):
+                    player1.result=False
+                    player2.result=True
+                else:
+                    player1.result=True
+                    player2.result=False
+            elif(player1.difficulty=="hi"and player2.difficulty=="hi"):
+                if(randrange(100)<50):
+                    player1.result=True
+                    player2.result=False
+                else:
+                    player1.result=False
+                    player2.result=True
+                
+
 

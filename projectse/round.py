@@ -1,3 +1,4 @@
+
 class Round:
   """ A Gameround with responsibility for keeping track of the status of a single game round  """
   def __init__(self, matches, configuration):
@@ -58,3 +59,6 @@ class Match:
 
   def get_black_player_name(self):
     return self.black_player.name
+  
+  
+  
