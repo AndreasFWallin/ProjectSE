@@ -78,7 +78,7 @@ class Tournament:
         if (inp == "r" or inp == "R"):
             self.start_tournament()
             print("Reinstating the tournament")
-
+#If a 2 players are AI players the will be determined according to a probability
 def aiplay(player1,player2):
     if(isinstance(player1,AIPlayer) and isinstance(player2,AIPlayer)):
         if(player1.difficulty=="lo" and player2.difficulty=="lo"):
