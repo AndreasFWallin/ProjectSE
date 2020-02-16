@@ -81,59 +81,58 @@ class Tournament:
 #If a 2 players are AI players the will be determined according to a probability
 def aiplay(player1,player2):
     if(isinstance(player1,AIPlayer) and isinstance(player2,AIPlayer)):
-        if(player1.difficulty=="lo" and player2.difficulty=="lo"):
+        if(player1.difficulty==1 and player2.difficulty==1):
             if(randrange(100)<50):
-                return player1
+                return player1;
 
             else:
-                return player2
+                return player2;
         
-        elif(player1.difficulty=="lo" and player2.difficulty=="mid"):
+        elif(player1.difficulty==1 and player2.difficulty==2):
             if(randrange(100)<35):
-                return player1
+                return player1;
             else:
                 return player2;
-        elif(player1.difficulty=="lo"and player2.difficulty=="hi"):
+        elif(player1.difficulty==1and player2.difficulty==3):
             if(randrange(100)<15):
-                return player1
-            else:
-                return player2
-        elif(player1.difficulty=="mid"and player2.difficulty=="lo"):
-            if(randrange(100)<35):
-                return player2
-            else:
-                return player1
-        elif(player1.difficulty=="mid"and player2.difficulty=="mid"):
-            if(randrange(100)<50):
-                return player1
+                return player1;
             else:
                 return player2;
-        elif(player1.difficulty=="mid"and player2.difficulty=="hi"):
+        elif(player1.difficulty==2and player2.difficulty==1):
             if(randrange(100)<35):
-                return player1
+                return player2;
             else:
-                return player2
-        elif(player1.difficulty=="lo"and player2.difficulty=="mid"):
-            if(randrange(100)<35):
-                return player1
-            else:
-                return player2
-        elif(player1.difficulty=="hi"and player2.difficulty=="lo"):
-            if(randrange(100)<15):
-                return player2
-            else:
-                return player1
-        elif(player1.difficulty=="hi"and player2.difficulty=="mid"):
-            if(randrange(100)<35):
-                return player2
-            else:
-                return player1
-        elif(player1.difficulty=="hi"and player2.difficulty=="hi"):
+                return player1;
+        elif(player1.difficulty==2and player2.difficulty==2):
             if(randrange(100)<50):
-                return player1
+                return player1;
             else:
-                return player2
-
+                return player2;
+        elif(player1.difficulty==2and player2.difficulty==3):
+            if(randrange(100)<35):
+                return player1;
+            else:
+                return player2;
+        elif(player1.difficulty==1and player2.difficulty==2):
+            if(randrange(100)<35):
+                return player1;
+            else:
+                return player2;
+        elif(player1.difficulty==3and player2.difficulty==1):
+            if(randrange(100)<15):
+                return player2;
+            else:
+                return player1;
+        elif(player1.difficulty==3and player2.difficulty==2):
+            if(randrange(100)<35):
+                return player2;
+            else:
+                return player1;
+        elif(player1.difficulty==3and player2.difficulty==3):
+            if(randrange(100)<50):
+                return player1;
+            else:
+                return player2;
 
 
 
