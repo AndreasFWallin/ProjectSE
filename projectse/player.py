@@ -2,7 +2,8 @@ class Player:
     """ Human Player for the UU-game"""
     def __init__(self,name):
         self.name = name
-
+        self.result=False;
+        
 class AIPlayer(Player):
     """ Player controlled by a computer """
     def __init__(self, name, difficulty):
