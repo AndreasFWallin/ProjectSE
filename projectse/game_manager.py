@@ -1,5 +1,5 @@
 import socket
-import numpy as np
+
 
 """ Proxy module which handles the communication between Game Engine and Game Platform modules """
 class GameManager:
@@ -28,12 +28,12 @@ class GameManager:
         """
         message_recieved = self.socket.recv(1024)
         if dtype == "np_array":
-            message_recieved = np.frombuffer(message_recieved, dtype=int)
+            message_recieved = list(message_recieved)
         # TODO add the necessary transformation of the data
         elif dtype == "string":
             message_recieved = message_recieved.decode()
         else:
-            print("Warning, incorrect option")¨
+            print("Warning, incorrect option")
             exit(0)
         print("message_recieved", message_recieved)
         return message_recieved

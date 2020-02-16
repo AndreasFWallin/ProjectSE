@@ -1,3 +1,5 @@
+import sys
+sys.path.insert(0, r"C:\UU\VT20\SEPM\ProjectSE")
 from projectse.player import *
 from enum import Enum
 """ Configuration module from which user-input will define properties for a tournament"""
@@ -60,10 +62,10 @@ class ConfigurationBuilder:
         """ menu for dealing with adding all the players to the configuration """
         """ First number of players, then number of human players, and then difficulty 
             for each AI-player """
-        max_players = 99
+        max_players = 8
         player_list = []
         self.print_out("= Configuration. Player setup =")
-        total_players = self.get_number_input("Select total number of players:",1,max_players)
+        total_players = self.get_number_input("Select total number of players:",3,max_players)
         #There needs to be atleast one human player
         num_ai_player = self.get_number_input("Select number of AI players:",0,total_players-1)
         for ai_player in range(num_ai_player):
@@ -73,7 +75,6 @@ class ConfigurationBuilder:
         for human_player in range(total_players-num_ai_player):
             name = self.get_input("Set name for Player#{}".format(human_player+1))
             player_list.append(Player(name))
-
         self.configure_players(player_list)
 
 

@@ -10,7 +10,8 @@ from projectse.tournament import *
 class ProjectSE:
     def __init__(self):
         self.cb = ConfigurationBuilder()
-        self.t = Tournament()
+        
+
         pass
 
     def tournament_start_choice(self):
@@ -24,7 +25,6 @@ class ProjectSE:
             if msvcrt.kbhit():
                 key_hit = msvcrt.getch()
                 if (key_hit == b't' or key_hit == b'T'):
-                    print("Get ready to rumble!!!")
                     return True
                 elif (key_hit == b'q' or key_hit == b'Q'):
                     print("See you next time!")
@@ -35,15 +35,18 @@ class ProjectSE:
 
     def start(self):
         print("Application started")
-        self.tournament_start_choice()
-        if True:
+        choice = self.tournament_start_choice()
+        if choice:
             self.cb.query_players()
-        if self.tournament_start_choice() == True:
+            
+        if choice:
             self.main_loop()
         self.exit()
         
     def main_loop(self):
-        print("PLACEHOLDER FOR GAME")
+        print("Get ready to rumble!!!")
+        self.t = Tournament(self.cb.cfg)
+        self.t.start_tournament()
 
     def exit(self):
         print("Game exited")
