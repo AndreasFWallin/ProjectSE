@@ -3,6 +3,8 @@ from random import randrange
 from projectse.player import *
 from projectse.tournament_scheduler import *
 from round import *
+from projectse.tournament_drawer import *
+
 class Tournament:
     """ Tournament is responsible for handling a round-robin tournament for a two player game based on a collection of
         players (which players and their properties is decided elsewhere). It keeps track of current game, next game, who won etc. """
@@ -12,6 +14,7 @@ class Tournament:
         self.list_players = config.players
         self.num_players = len(self.list_players)
         self.tournament_scheduler = TournamentScheduler(self.num_players)
+        self.tournament_drawer = TournamentDrawer(self.list_players)
         self.round_num = 0
         self.most_wins = 0
         self.most_white_wins = -1
@@ -20,13 +23,14 @@ class Tournament:
         self.current_match = None
         self.match = None
         self.winner = None
-        
+
 
 
     def start_tournament(self):
         """
 
         """
+
         for i in range(self.num_players):
             self.match_round = self.tournament_scheduler.get_round(i+1)
             if self.match_round != None: # 
@@ -34,6 +38,8 @@ class Tournament:
                 print("This is round number, ", i+1)
                 self.print_round()
                 self.play_matches()
+                print("         Test for updating tournament table. 1 and 3 won the game")
+                self.tournament_drawer.updateTable(i,[1,3])
         self.stop_tournament()
             
             
