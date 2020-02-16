@@ -58,3 +58,79 @@ class Match:
 
   def get_black_player_name(self):
     return self.black_player.name
+  
+  
+  def aiplay(player1,player2):
+    if(isinstance(player1,AIPlayer) and isinstance(player2,AIPlayer)):
+        if(player1.difficulty=="lo" and player2.difficulty=="lo"):
+            if(randrange(100)<50):
+                player1.result=True
+                player2.result=False;
+            else:
+                player2.result=True
+                player1.result=False;
+        
+        elif(player1.difficulty=="lo" and player2.difficulty=="mid"):
+            if(randrange(100)<35):
+                player1.result=True
+                player2.result=False
+            else:
+                player1.result=False
+                player2.result=True;
+        elif(player1.difficulty=="lo"and player2.difficulty=="hi"):
+            if(randrange(100)<15):
+                player1.result=True
+                player2.result=False
+            else:
+                player1.result=False
+                player2.result=True;
+        elif(player1.difficulty=="mid"and player2.difficulty=="lo"):
+            if(randrange(100)<35):
+                player1.result=False
+                player2.result=True
+            else:
+                player1.result=True
+                player2.result=False;
+        elif(player1.difficulty=="mid"and player2.difficulty=="mid"):
+            if(randrange(100)<50):
+                player1.result=True
+                player2.result=False
+            else:
+                player1.result=False
+                player2.result=True;
+        elif(player1.difficulty=="mid"and player2.difficulty=="hi"):
+            if(randrange(100)<35):
+                player1.result=True
+                player2.result=False
+            else:
+                player1.result=False
+                player2.result=True;
+        elif(player1.difficulty=="lo"and player2.difficulty=="mid"):
+            if(randrange(100)<35):
+                player1.result=True
+                player2.result=False
+            else:
+                player1.result=False
+                player2.result=True;
+        elif(player1.difficulty=="hi"and player2.difficulty=="lo"):
+            if(randrange(100)<15):
+                player1.result=False
+                player2.result=True
+            else:
+                player1.result=True
+                player2.result=False;
+        elif(player1.difficulty=="hi"and player2.difficulty=="mid"):
+            if(randrange(100)<35):
+                player1.result=False
+                player2.result=True
+            else:
+                player1.result=True
+                player2.result=False;
+        elif(player1.difficulty=="hi"and player2.difficulty=="hi"):
+            if(randrange(100)<50):
+                player1.result=True
+                player2.result=False
+            else:
+                player1.result=False
+                player2.result=True;
+                
