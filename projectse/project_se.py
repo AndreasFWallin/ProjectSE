@@ -1,7 +1,6 @@
 
 """ Highest level and entrypoint of the ProjectSE / UU-game application """
-import sys
-sys.path.insert(0, r"C:\UU\VT20\SEPM\ProjectSE")
+
 from projectse.player import *
 from projectse.configuration import *
 from projectse.game_manager import *
