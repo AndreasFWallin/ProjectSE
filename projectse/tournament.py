@@ -2,8 +2,9 @@ from random import randrange
 
 from projectse.player import *
 from projectse.tournament_scheduler import *
-from round import *
+from projectse.round import *
 from projectse.tournament_drawer import *
+
 
 class Tournament:
     """ Tournament is responsible for handling a round-robin tournament for a two player game based on a collection of
@@ -90,6 +91,65 @@ class Tournament:
         if (inp == "r" or inp == "R"):
             self.start_tournament()
             print("Reinstating the tournament")
+<<<<<<< HEAD
+
+    #If a 2 players are AI players the will be determined according to a probability
+    def aiplay(self, player1,player2):
+        if(isinstance(player1,AIPlayer) and isinstance(player2,AIPlayer)):
+            if(player1.difficulty=="lo" and player2.difficulty=="lo"):
+                if(randrange(100)<50):
+                    return player1
+                else:
+                    return player2
+
+            elif(player1.difficulty=="lo" and player2.difficulty=="mid"):
+                if(randrange(100)<35):
+                    return player1
+                else:
+                    return player2;
+            elif(player1.difficulty=="lo"and player2.difficulty=="hi"):
+                if(randrange(100)<15):
+                    return player1
+                else:
+                    return player2
+            elif(player1.difficulty=="mid"and player2.difficulty=="lo"):
+                if(randrange(100)<35):
+                    return player2
+                else:
+                    return player1
+            elif(player1.difficulty=="mid"and player2.difficulty=="mid"):
+                if(randrange(100)<50):
+                    return player1
+                else:
+                    return player2;
+            elif(player1.difficulty=="mid"and player2.difficulty=="hi"):
+                if(randrange(100)<35):
+                    return player1
+                else:
+                    return player2
+            elif(player1.difficulty=="lo"and player2.difficulty=="mid"):
+                if(randrange(100)<35):
+                    return player1
+                else:
+                    return player2
+            elif(player1.difficulty=="hi"and player2.difficulty=="lo"):
+                if(randrange(100)<15):
+                    return player2
+                else:
+                    return player1
+            elif(player1.difficulty=="hi"and player2.difficulty=="mid"):
+                if(randrange(100)<35):
+                    return player2
+                else:
+                    return player1
+            elif(player1.difficulty=="hi"and player2.difficulty=="hi"):
+                if(randrange(100)<50):
+                    return player1
+                else:
+                    return player2
+
+
+=======
 <<<<<<< HEAD
 
 
@@ -194,6 +254,7 @@ def aiplay(player1,player2):
                 return player1;
             else:
                 return player2;
+>>>>>>> master
 
     def tournament_drawer(self):
         self.all_matches += self.current_round.played_matches
