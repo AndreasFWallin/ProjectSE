@@ -1,5 +1,4 @@
-import sys
-sys.path.insert(0, r"C:\UU\VT20\SEPM\ProjectSE")
+
 from projectse.player import *
 from enum import Enum
 """ Configuration module from which user-input will define properties for a tournament"""
@@ -13,6 +12,7 @@ class Configuration:
 
     def set_players(self, players):
         self.players=players
+
 
 class ConfigurationBuilder:
     """ Responsible for collecting info while creating the Configuration object """
@@ -64,16 +64,24 @@ class ConfigurationBuilder:
             for each AI-player """
         max_players = 8
         player_list = []
+        name_list = []
         self.print_out("= Configuration. Player setup =")
-        total_players = self.get_number_input("Select total number of players:",3,max_players)
+        total_players = self.get_number_input("Select total number of players: ", 3, max_players)
         #There needs to be atleast one human player
-        num_ai_player = self.get_number_input("Select number of AI players:",0,total_players-1)
+        num_ai_player = self.get_number_input("Select number of AI players: ", 0, total_players-1)
         for ai_player in range(num_ai_player):
-            diff = self.get_char_input("Set difficulty for AI player #{}".format(ai_player+1), ["H", "M", "L"])
-            player_list.append(AIPlayer("AIPlayer"+str(ai_player+1), self.parse_difficulty(diff)))
+            diff = self.get_char_input("Set difficulty for AI player, use 'H', 'M' or 'L' #{} ".format(ai_player+1), ["H", "M", "L"])
+            player_list.append(AIPlayer("AIPlayer"+str(ai_player+1)+diff, self.parse_difficulty(diff)))
 
         for human_player in range(total_players-num_ai_player):
             name = self.get_input("Set name for Player#{}".format(human_player+1))
+            if name in name_list:
+                while True:
+                    print("The name ", name, " is not unique, please enter a new one")
+                    name = self.get_input("Set name for Player#{}".format(human_player + 1))
+                    if name not in name_list:
+                        break
+            name_list.append(name)
             player_list.append(Player(name))
         self.configure_players(player_list)
 
