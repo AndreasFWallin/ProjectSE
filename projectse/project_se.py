@@ -1,17 +1,16 @@
 
 """ Highest level and entrypoint of the ProjectSE / UU-game application """
-
 from projectse.player import *
 from projectse.configuration import *
 from projectse.game_manager import *
 from projectse.tournament import *
+
 
 class ProjectSE:
     def __init__(self):
         self.cb = ConfigurationBuilder()
         
 
-        pass
 
     def tournament_start_choice(self):
         """ Get user input to determine if to start
