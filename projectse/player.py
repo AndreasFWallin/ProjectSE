@@ -1,3 +1,7 @@
+from enum import Enum
+
+AIDifficulty = Enum("AIDifficulty", "low med hi")
+
 class Player:
     """ Human Player for the UU-game"""
     def __init__(self,name):

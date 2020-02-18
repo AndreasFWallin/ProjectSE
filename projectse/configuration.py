@@ -1,9 +1,7 @@
 import sys
 sys.path.insert(0, r"C:\UU\VT20\SEPM\ProjectSE")
 from projectse.player import *
-from enum import Enum
 """ Configuration module from which user-input will define properties for a tournament"""
-AIDifficulty = Enum("AIDifficulty", "low med hi")
 
 class Configuration:
     """ Configuration object to be send to configure the tournament """

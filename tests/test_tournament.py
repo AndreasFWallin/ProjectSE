@@ -1,22 +1,24 @@
 from projectse.tournament import Tournament
 from projectse.round import Round, Match
-from projectse.player import Player, AIPlayer
+from projectse.player import *
+from unittest.mock import MagicMock
 import unittest
 
 
 class TournamentTestCase(unittest.TestCase):
-    def test_something(self):
-        self.assertEqual(True, False)
+    def test_ai_play(self):
 
-    
+        t = Tournament(MagicMock())
         #Create AI players
-        ai1 = AIPlayer("test 1","lo")
-        ai2 = AIPlayer("test 2","lo")
-        ai3 = AIPlayer("test 3","mid")
-        ai4 = AIPlayer("test 4","hi")
+        ai1 = MagicMock()
+        ai1.difficuly = AIDifficulty.hi
+        ai2 = MagicMock()
+        ai2.difficuly = AIDifficulty.low
+
         #TODO: Rewrite aiplay unittest
-        #aiplay() Returns an AI player
-        self.assertIsInstance(aiplay(ai1,ai2),AIPlayer)
+        players = [ai1,ai2]
+        ai_winner = t.aiplay(ai1, ai2) #Returns an AI player
+        self.assertIn(ai_winner, players)
 
 if __name__ == '__main__':
     unittest.main()
