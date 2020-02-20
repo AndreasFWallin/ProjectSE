@@ -1,5 +1,9 @@
 import sys
+<<<<<<< HEAD
 sys.path.insert(0, r"C:\UU\VT20\SEPM\updated\ProjectSE")
+=======
+sys.path.insert(0, r"C:\UU\VT20\SEPM\updated")
+>>>>>>> fd31481487725b337dbe058af168a5af20bdfa97
 import unittest
 from projectse.game_manager import GameManager as GM
 
