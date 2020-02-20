@@ -1,9 +1,6 @@
 
-
-from enum import Enum
-from player import *
+from projectse.player import *
 """ Configuration module from which user-input will define properties for a tournament"""
-AIDifficulty = Enum("AIDifficulty", "low med hi")
 
 class Configuration:
     """ Configuration object to be send to configure the tournament """

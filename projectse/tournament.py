@@ -116,58 +116,58 @@ class Tournament:
         """
         If a 2 players are AI players the will be determined according to a probability
         """
-        if(isinstance(player1, AIPlayer) and isinstance(player2, AIPlayer)):
-            if(player1.difficulty==AIDifficulty.low and player2.difficulty==AIDifficulty.low):
-                if(randrange(100)<50):
-                    return player1
-                else:
-                    return player2
+    
+        if(player1.difficulty==AIDifficulty.low and player2.difficulty==AIDifficulty.low):
+            if(randrange(100)<50):
+                return player1
+            else:
+                return player2
 
-            elif(player1.difficulty==AIDifficulty.low and player2.difficulty==AIDifficulty.med):
-                if(randrange(100)<35):
-                    return player1
-                else:
-                    return player2
-            elif(player1.difficulty==AIDifficulty.low and player2.difficulty==AIDifficulty.hi):
-                if(randrange(100)<15):
-                    return player1
-                else:
-                    return player2
-            elif(player1.difficulty==AIDifficulty.med and player2.difficulty==AIDifficulty.low):
-                if(randrange(100)<35):
-                    return player2
-                else:
-                    return player1
-            elif(player1.difficulty==AIDifficulty.med and player2.difficulty==AIDifficulty.med):
-                if(randrange(100)<50):
-                    return player1
-                else:
-                    return player2
-            elif(player1.difficulty==AIDifficulty.med and player2.difficulty==AIDifficulty.hi):
-                if(randrange(100)<35):
-                    return player1
-                else:
-                    return player2
-            elif(player1.difficulty==AIDifficulty.low and player2.difficulty==AIDifficulty.med):
-                if(randrange(100)<35):
-                    return player1
-                else:
-                    return player2
-            elif(player1.difficulty==AIDifficulty.hi and player2.difficulty==AIDifficulty.low):
-                if(randrange(100)<15):
-                    return player2
-                else:
-                    return player1
-            elif(player1.difficulty==AIDifficulty.hi and player2.difficulty==AIDifficulty.med):
-                if(randrange(100)<35):
-                    return player2
-                else:
-                    return player1
-            elif(player1.difficulty==AIDifficulty.hi and player2.difficulty==AIDifficulty.hi):
-                if(randrange(100)<50):
-                    return player1
-                else:
-                    return player2
+        elif(player1.difficulty==AIDifficulty.low and player2.difficulty==AIDifficulty.med):
+            if(randrange(100)<35):
+                return player1
+            else:
+                return player2
+        elif(player1.difficulty==AIDifficulty.low and player2.difficulty==AIDifficulty.hi):
+            if(randrange(100)<15):
+                return player1
+            else:
+                return player2
+        elif(player1.difficulty==AIDifficulty.med and player2.difficulty==AIDifficulty.low):
+            if(randrange(100)<35):
+                return player2
+            else:
+                return player1
+        elif(player1.difficulty==AIDifficulty.med and player2.difficulty==AIDifficulty.med):
+            if(randrange(100)<50):
+                return player1
+            else:
+                return player2
+        elif(player1.difficulty==AIDifficulty.med and player2.difficulty==AIDifficulty.hi):
+            if(randrange(100)<35):
+                return player1
+            else:
+                return player2
+        elif(player1.difficulty==AIDifficulty.low and player2.difficulty==AIDifficulty.med):
+            if(randrange(100)<35):
+                return player1
+            else:
+                return player2
+        elif(player1.difficulty==AIDifficulty.hi and player2.difficulty==AIDifficulty.low):
+            if(randrange(100)<15):
+                return player2
+            else:
+                return player1
+        elif(player1.difficulty==AIDifficulty.hi and player2.difficulty==AIDifficulty.med):
+            if(randrange(100)<35):
+                return player2
+            else:
+                return player1
+        elif(player1.difficulty==AIDifficulty.hi and player2.difficulty==AIDifficulty.hi):
+            if(randrange(100)<50):
+                return player1
+            else:
+                return player2
 
     def find_match(self, player1, player2):
         """
