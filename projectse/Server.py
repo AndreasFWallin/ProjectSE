@@ -8,7 +8,7 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 port = 3000               
   
 # connect to the server on local computer 
-s.bind(('192.168.0.105', port)) 
+s.bind(('192.168.0.105', port))
 
 s.listen(5)
 while True:

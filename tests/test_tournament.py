@@ -18,5 +18,7 @@ class TournamentTestCase(unittest.TestCase):
         #aiplay() Returns an AI player
         self.assertIsInstance(aiplay(ai1,ai2),AIPlayer)
 
+    def test_tournament(self):
+
 if __name__ == '__main__':
     unittest.main()

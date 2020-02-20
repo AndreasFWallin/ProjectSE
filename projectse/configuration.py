@@ -1,6 +1,7 @@
 
-from projectse.player import *
+
 from enum import Enum
+from player import *
 """ Configuration module from which user-input will define properties for a tournament"""
 AIDifficulty = Enum("AIDifficulty", "low med hi")
 
@@ -66,21 +67,20 @@ class ConfigurationBuilder:
         player_list = []
         name_list = []
         self.print_out("= Configuration. Player setup =")
-        total_players = self.get_number_input("Select total number of players: ", 3, max_players)
+        total_players = self.get_number_input("Select total number of players, between 3 and 8: ", 3, max_players)
         #There needs to be atleast one human player
         num_ai_player = self.get_number_input("Select number of AI players: ", 0, total_players-1)
+        if num_ai_player > 0:
+            print("To select High difficulty use: 'H'. Medium: 'M'. Low: 'L' ")
         for ai_player in range(num_ai_player):
-            diff = self.get_char_input("Set difficulty for AI player, use 'H', 'M' or 'L' #{} ".format(ai_player+1), ["H", "M", "L"])
+            diff = self.get_char_input("Set difficulty for AI player,#{} ".format(ai_player+1), ["H", "M", "L"])
             player_list.append(AIPlayer("AIPlayer"+str(ai_player+1)+diff, self.parse_difficulty(diff)))
-
+        print("The name(s) input needs to be unique and no longer than 7 characters.")
         for human_player in range(total_players-num_ai_player):
-            name = self.get_input("Set name for Player#{}".format(human_player+1))
-            if name in name_list:
-                while True:
-                    print("The name ", name, " is not unique, please enter a new one")
-                    name = self.get_input("Set name for Player#{}".format(human_player + 1))
-                    if name not in name_list:
-                        break
+            name = self.get_input("Set name for Player#{}, ".format(human_player+1))
+            valid_name = self.valid_name(name, name_list, human_player)
+            if valid_name:
+                name = valid_name
             name_list.append(name)
             player_list.append(Player(name))
         self.configure_players(player_list)
@@ -89,3 +89,19 @@ class ConfigurationBuilder:
     def configure_players(self,player_list):
         self.cfg.set_players(player_list)
 
+    def valid_name(self, name, name_list, human_player):
+        """
+        Makes sure the name input is not too long and unique
+        """
+        if name in name_list:
+            while True:
+                print("The name ", name, " is not unique, please enter a new one")
+                name = self.get_input("Set name for Player#{}".format(human_player + 1))
+                if name not in name_list:
+                    return name
+        if len(name) > 7:
+            while True:
+                print("The name ", name, " is too long, please enter a new one that is shorter than 7 characters")
+                name = self.get_input("Set name for Player#{}".format(human_player + 1))
+                if name not in name_list:
+                    return name
