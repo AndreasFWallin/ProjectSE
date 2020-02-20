@@ -5,7 +5,7 @@ import socket
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)          
   
 # Define the port on which you want to connect 
-port = 3000               
+port = 3002               
   
 # connect to the server on local computer 
 s.bind(('192.168.0.105', port)) 
