@@ -1,9 +1,10 @@
 from random import randrange
 
-from projectse.player import *
-from projectse.tournament_scheduler import *
-from projectse.round import *
-from projectse.tournament_drawer import *
+from configuration import *
+from player import *
+from tournament_scheduler import *
+from round import *
+from tournament_drawer import *
 
 
 class Tournament:
@@ -15,7 +16,7 @@ class Tournament:
         self.list_players = config.players
         self.num_players = len(self.list_players)
         self.tournament_scheduler = TournamentScheduler(self.num_players)
-        self.tournament_drawer = TournamentDrawer(self.list_players)
+        self.tournamentdrawer = TournamentDrawer(self.list_players)
         self.round_num = 0
         self.most_wins = -1
         self.most_white_wins = -1
@@ -30,7 +31,7 @@ class Tournament:
 
     def start_tournament(self):
         """
-
+        Here the tournament is started and played.
         """
 
         for i in range(self.num_players):
@@ -40,9 +41,9 @@ class Tournament:
                 print("This is round number, ", i+1)
                 self.print_round()
                 self.play_matches()
-                self.tournament_drawer()
+                # self.tournament_drawer()
                 print("         Test for updating tournament table. 1 and 3 won the game")
-                self.tournament_drawer.updateTable(i,[1,3])
+                self.tournamentdrawer.updateTable(i,[1,3])
         self.stop_tournament()
             
             
@@ -53,6 +54,9 @@ class Tournament:
             self.list_players[self.match_round[i][1]-1].name, " as black")
 
     def play_matches(self):
+        """
+        Here the actual matches (1v1) are played in a round
+        """
         for i in range(len(self.current_round.matches)):
             self.all_matches += self.current_round.unplayed_matches
             self.current_round.set_next_match()
@@ -63,7 +67,8 @@ class Tournament:
             " as white, versus ", self.current_match.get_black_player_name(),
             "as black")
             print()
-            self.current_match.winner = black
+            
+
             if isinstance(white, AIPlayer) and isinstance(black, AIPlayer):
                 print("AI VS AI, the winner will be determined by skill and luck")
                 current_winner = self.aiplay(white, black)
@@ -75,207 +80,132 @@ class Tournament:
             else: 
                 print("PLACEHOLDER FOR ACTUAL GAME")
                 # TODO add the actual game where the match is being played
-                if white.name == "winner":
-                    white.won_game_white()
-             
-
+                current_winner = black  # CHANGE WHEN ACTUAL GAMES IS ADDED
+                if current_winner == white:
+                    current_winner.won_game_white()
+                else:
+                    current_winner.won_game() 
+                self.current_match.winner = current_winner
+            print(self.current_match.winner.name, "won the game. \n \n")
 
     def stop_tournament(self):
+        """
+        The end of tournament, where the winner is announced and
+        the tournament can be replayed if input is given 
+        """
         for player in self.list_players:
-            if player.wins > self.most_wins and player.white_wins > self.most_white_wins:
+            print(player.name, player.wins)
+            if player.wins > self.most_wins:
                 self.winner = player
+                self.most_wins = player.wins
+            elif player.wins == self.most_wins: # Player that won the match is tournament winner
+                print("Head to head", player, self.winner)
+                match = self.find_match(self.winner, player)
+                if match.winner == player:
+                   self.winner == player
+                   self.most_wins = player.wins
         print("The winner is ", self.winner.name, " with ", self.winner.wins, " wins")
 
         print("Do you want to play again with the same setup, input 'R' or, input any other button to exit:")
         inp = input()
-        if (inp == "r" or inp == "R"):
+        if (inp == "R"):
             self.start_tournament()
             print("Reinstating the tournament")
-<<<<<<< HEAD
 
-    #If a 2 players are AI players the will be determined according to a probability
-    def aiplay(self, player1,player2):
-        if(isinstance(player1,AIPlayer) and isinstance(player2,AIPlayer)):
-            if(player1.difficulty=="lo" and player2.difficulty=="lo"):
-                if(randrange(100)<50):
-                    return player1
-                else:
-                    return player2
-
-            elif(player1.difficulty=="lo" and player2.difficulty=="mid"):
-                if(randrange(100)<35):
-                    return player1
-                else:
-                    return player2;
-            elif(player1.difficulty=="lo"and player2.difficulty=="hi"):
-                if(randrange(100)<15):
-                    return player1
-                else:
-                    return player2
-            elif(player1.difficulty=="mid"and player2.difficulty=="lo"):
-                if(randrange(100)<35):
-                    return player2
-                else:
-                    return player1
-            elif(player1.difficulty=="mid"and player2.difficulty=="mid"):
-                if(randrange(100)<50):
-                    return player1
-                else:
-                    return player2;
-            elif(player1.difficulty=="mid"and player2.difficulty=="hi"):
-                if(randrange(100)<35):
-                    return player1
-                else:
-                    return player2
-            elif(player1.difficulty=="lo"and player2.difficulty=="mid"):
-                if(randrange(100)<35):
-                    return player1
-                else:
-                    return player2
-            elif(player1.difficulty=="hi"and player2.difficulty=="lo"):
-                if(randrange(100)<15):
-                    return player2
-                else:
-                    return player1
-            elif(player1.difficulty=="hi"and player2.difficulty=="mid"):
-                if(randrange(100)<35):
-                    return player2
-                else:
-                    return player1
-            elif(player1.difficulty=="hi"and player2.difficulty=="hi"):
-                if(randrange(100)<50):
-                    return player1
-                else:
-                    return player2
-
-
-=======
-<<<<<<< HEAD
-
-
-    #If a 2 players are AI players the will be determined according to a probability
-    def aiplay(self, player1,player2):
-        print(type(player1.difficulty), player2.difficulty)
-        # if(isinstance(player1,AIPlayer) and isinstance(player2,AIPlayer)):
-        if(player1.difficulty=="low" and player2.difficulty=="low"):
-=======
-#If a 2 players are AI players the will be determined according to a probability
-def aiplay(player1,player2):
-    if(isinstance(player1,AIPlayer) and isinstance(player2,AIPlayer)):
-        if(player1.difficulty==1 and player2.difficulty==1):
->>>>>>> 7b37b11fa8950449c75a22b1c93ae6ca48945e85
+    def aiplay(self, player1, player2):
+        """
+        If a 2 players are AI players the will be determined according to a probability
+        """
+    
+        if(player1.difficulty==AIDifficulty.low and player2.difficulty==AIDifficulty.low):
             if(randrange(100)<50):
-                return player1;
-
-            else:
-                return player2;
-        
-<<<<<<< HEAD
-        elif(player1.difficulty=="low" and player2.difficulty=="med"):
-=======
-        elif(player1.difficulty==1 and player2.difficulty==2):
->>>>>>> 7b37b11fa8950449c75a22b1c93ae6ca48945e85
-            if(randrange(100)<35):
-                return player1;
-            else:
-<<<<<<< HEAD
-                return player2
-        elif(player1.difficulty=="low"and player2.difficulty=="hi"):
-=======
-                return player2;
-        elif(player1.difficulty==1and player2.difficulty==3):
->>>>>>> 7b37b11fa8950449c75a22b1c93ae6ca48945e85
-            if(randrange(100)<15):
-                return player1;
-            else:
-<<<<<<< HEAD
-                return player2
-        elif(player1.difficulty=="med"and player2.difficulty=="low"):
-=======
-                return player2;
-        elif(player1.difficulty==2and player2.difficulty==1):
->>>>>>> 7b37b11fa8950449c75a22b1c93ae6ca48945e85
-            if(randrange(100)<35):
-                return player2;
-            else:
-<<<<<<< HEAD
                 return player1
-        elif(player1.difficulty=="M" and player2.difficulty=="M"):
-=======
-                return player1;
-        elif(player1.difficulty==2and player2.difficulty==2):
->>>>>>> 7b37b11fa8950449c75a22b1c93ae6ca48945e85
-            if(randrange(100)<50):
-                return player1;
             else:
-<<<<<<< HEAD
                 return player2
-        elif(player1.difficulty=="med"and player2.difficulty=="hi"):
-=======
-                return player2;
-        elif(player1.difficulty==2and player2.difficulty==3):
->>>>>>> 7b37b11fa8950449c75a22b1c93ae6ca48945e85
+
+        elif(player1.difficulty==AIDifficulty.low and player2.difficulty==AIDifficulty.med):
             if(randrange(100)<35):
-                return player1;
-            else:
-<<<<<<< HEAD
-                return player2
-        elif(player1.difficulty=="low"and player2.difficulty=="med"):
-=======
-                return player2;
-        elif(player1.difficulty==1and player2.difficulty==2):
->>>>>>> 7b37b11fa8950449c75a22b1c93ae6ca48945e85
-            if(randrange(100)<35):
-                return player1;
-            else:
-<<<<<<< HEAD
-                return player2
-        elif(player1.difficulty=="hi"and player2.difficulty=="low"):
-=======
-                return player2;
-        elif(player1.difficulty==3and player2.difficulty==1):
->>>>>>> 7b37b11fa8950449c75a22b1c93ae6ca48945e85
-            if(randrange(100)<15):
-                return player2;
-            else:
-<<<<<<< HEAD
                 return player1
-        elif(player1.difficulty=="hi"and player2.difficulty=="med"):
-=======
-                return player1;
-        elif(player1.difficulty==3and player2.difficulty==2):
->>>>>>> 7b37b11fa8950449c75a22b1c93ae6ca48945e85
+            else:
+                return player2
+        elif(player1.difficulty==AIDifficulty.low and player2.difficulty==AIDifficulty.hi):
+            if(randrange(100)<15):
+                return player1
+            else:
+                return player2
+        elif(player1.difficulty==AIDifficulty.med and player2.difficulty==AIDifficulty.low):
             if(randrange(100)<35):
-                return player2;
+                return player2
             else:
-                return player1;
-        elif(player1.difficulty==3and player2.difficulty==3):
+                return player1
+        elif(player1.difficulty==AIDifficulty.med and player2.difficulty==AIDifficulty.med):
             if(randrange(100)<50):
-                return player1;
+                return player1
             else:
-                return player2;
->>>>>>> master
+                return player2
+        elif(player1.difficulty==AIDifficulty.med and player2.difficulty==AIDifficulty.hi):
+            if(randrange(100)<35):
+                return player1
+            else:
+                return player2
+        elif(player1.difficulty==AIDifficulty.low and player2.difficulty==AIDifficulty.med):
+            if(randrange(100)<35):
+                return player1
+            else:
+                return player2
+        elif(player1.difficulty==AIDifficulty.hi and player2.difficulty==AIDifficulty.low):
+            if(randrange(100)<15):
+                return player2
+            else:
+                return player1
+        elif(player1.difficulty==AIDifficulty.hi and player2.difficulty==AIDifficulty.med):
+            if(randrange(100)<35):
+                return player2
+            else:
+                return player1
+        elif(player1.difficulty==AIDifficulty.hi and player2.difficulty==AIDifficulty.hi):
+            if(randrange(100)<50):
+                return player1
+            else:
+                return player2
+
+    def find_match(self, player1, player2):
+        """
+        Finds the match that had player1 and player2  and returns it
+        """
+        for match in self.all_matches:
+            if (player1 == match.white_player or player1 == match.black_player) and (player2 == match.white_player or player2 == match.black_player):
+                return match
+        print("ERROR, MATCH NOT FOUND THIS SHOULD ONLY BE USED AT THE END")
+
+
+
+
 
     def tournament_drawer(self):
+        """
+        Not in use, prints a table try it by uncommenting in start tournament
+        """
+        print("TBD = To Be Decided")
         self.all_matches += self.current_round.played_matches
-        print(end = " "*9)
+        print(end=" " * 15)
         for player in self.list_players:
-            print(player.name, end = " "*(9-len(player.name)))
+            print(player.name, end=" " * (15 - len(player.name)))
         print()
         for i, player1 in enumerate(self.list_players):
-           
-            print(player1.name, end = " "*(9-len(player1.name)))
+
+            print(player1.name, end=" " * (15 - len(player1.name)))
             for j, player2 in enumerate(self.list_players):
                 if i == j:
-                    print("-", end = " "*8)
+                    print("-", end=" " * 14)
                 else:
                     found = False
                     for match in self.all_matches:
-                        if (player1 == match.white_player or player1 == match.black_player) and (player2 == match.white_player or player2 == match.black_player) and found == False:
-                            print(match.winner.name, end = " "*(9-len(match.winner.name)))
+                        if (player1 == match.white_player or player1 == match.black_player) and (
+                                player2 == match.white_player or player2 == match.black_player) and found == False:
+                            print(match.winner.name, end=" " * (15 - len(match.winner.name)))
                             found = True
                     if found == False:
-                        print("*", end = " "*(8))
+                        print("TBD", end=" " * (12))
             print()
-
-
+        
