@@ -41,9 +41,7 @@ class Tournament:
                 print("This is round number, ", i+1)
                 self.print_round()
                 self.play_matches()
-                # self.tournament_drawer()
-                print("         Test for updating tournament table. 1 and 3 won the game")
-                self.tournamentdrawer.updateTable(i,[1,3])
+                self.tournamentdrawer.drawResultTable()
         self.stop_tournament()
             
             
@@ -74,8 +72,10 @@ class Tournament:
                 current_winner = self.aiplay(white, black)
                 if current_winner == white:
                     current_winner.won_game_white()
+                    self.current_match.loser = black
                 else:
-                    current_winner.won_game() 
+                    current_winner.won_game()
+                    self.current_match.loser = white
                 self.current_match.winner = current_winner
             else: 
                 print("PLACEHOLDER FOR ACTUAL GAME")
@@ -83,10 +83,13 @@ class Tournament:
                 current_winner = black  # CHANGE WHEN ACTUAL GAMES IS ADDED
                 if current_winner == white:
                     current_winner.won_game_white()
+                    self.current_match.loser = black
                 else:
-                    current_winner.won_game() 
+                    current_winner.won_game()
+                    self.current_match.loser = white
                 self.current_match.winner = current_winner
             print(self.current_match.winner.name, "won the game. \n \n")
+            self.tournamentdrawer.updateTable(self.current_match.winner, self.current_match.loser)
 
     def stop_tournament(self):
         """
@@ -208,4 +211,3 @@ class Tournament:
                     if found == False:
                         print("TBD", end=" " * (12))
             print()
-        
