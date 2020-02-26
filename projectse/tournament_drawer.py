@@ -11,26 +11,31 @@ class TournamentDrawer:
 
 
     def drawResultTable(self):
+        """ Prints the data stored in the 2D-array self.results(contains only 1/*/0 etc)
+         together with the player names in the list self.list_players """
         col_length = 12
-        division_rows="|-"+ ("-"*(col_length+2)+"|")*(len(self.list_players)+2)
+        division_rows="|-" + ("-"*(col_length+2) + "|")*(len(self.list_players) + 2)
 
 
         #Column headers
         print("Tournament Results")
         print(division_rows)
-        print("|", " " *(col_length+2), end="")
+        print("|", " "*(col_length + 2), end="") #Leave empty header slot in top-left (position[0][0])
+
         for player in self.list_players:
-            print("|", player.name, " " *(col_length-len(player.name)), end="")
-        print("|","Total score"," " *(col_length-len("Total score ")),"|",end="\n")
+            print("|", player.name, " "*(col_length - len(player.name)), end="")
+        print("|","Total score"," "*(col_length - len("Total score ")),"|",end="\n")
         print(division_rows)
 
         #Rows
-        for player, row in enumerate(self.results):
-            print("|", (self.list_players[player]).name, " " * (col_length - len((self.list_players[player]).name)), end=" ")
+        for player, result_row in enumerate(self.results):
+            # Print player name of the winner in the left column
+            print("|", (self.list_players[player]).name, " "*(col_length - len((self.list_players[player]).name)), end=" ")
 
-            for entry in row:
-                print("| ", entry, " " * (col_length-len(entry)-1), end="")
-            print("|  ", self.list_players[player].wins, " " * (col_length-len(str(self.list_players[player].wins))-2), end="|\n")
+            #Now unwrap the results for that player and print as entries to the same row as the name
+            for entry in result_row:
+                print("| ", entry, " "*(col_length-len(entry) - 1), end="")
+            print("|  ", self.list_players[player].wins, " "*(col_length-len(str(self.list_players[player].wins))-2), end="|\n")
         print(division_rows)
 
     #Uptades table after one match with param winner and loser player-object
