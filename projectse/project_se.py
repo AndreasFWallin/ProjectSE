@@ -15,10 +15,11 @@ from tournament import *
 class ProjectSE:
     def __init__(self):
         self.cb = ConfigurationBuilder()
+        self.platform = None
         
 
 
-    def tournament_start_choice(self):
+    def intro_menu_choice(self):
         """ Get user input to determine if to start
         new tournament (True) or exit (False)"""
         """
@@ -28,23 +29,67 @@ class ProjectSE:
         while True:
             key_hit = input()
             if (key_hit == 'T'):
-                return True
+                return "Tournament"
             elif (key_hit == 'Q'):
                 print("See you next time!")
-                return False
+                return "Quit"
             else:
                 print("You pressed", key_hit,
                 "This is not a valid key, press T or Q to start or quit")
 
-    def start(self):
+    def init(self):
         print("Application started")
-        choice = self.tournament_start_choice()
-        if choice:
-            self.cb.query_players()
-            
-        if choice:
-            self.main_loop()
-        self.exit()
+        choice = self.intro_menu_choice()
+        if choice == "Tournament":
+            # self.cb.query_players()
+
+            self.start_platform()
+        elif choice == "Quit":
+            self.exit()
+
+    def start_platform(self):
+        #TODO
+        # cfg = self.platform.getconfig()
+        # if isinstance(cfg, TournamentConfiguration())
+        #   self.run_tournament(cfg)
+        # elif isinstance(cfg, SinglePlayConfiguration())
+        #   match = self.create_match(cfg)
+        #   self.play_match(match)
+        # match_result = self.run_platform()
+
+    def run_tournament(self, cfg):
+        # TODO
+        # t = Tournament(cfg)
+        # for match in t.getRound(1)
+        #   self.play_match(match)
+        #
+
+    def create_match(self, cfg) -> Match:
+        # TODO
+        #return Match(Player(cfg.blabla),AIPlayer(cfg.diff))
+
+    def play_match(self, match) -> Match:
+
+        response = None
+        self.platform.init(match)
+            while not isinstance(response, Match):
+
+                board_state = self.platform.player_move()
+                new_board_state = self.game_manager.send_n_receive(board_state)
+                self.platform.update_board(new_board_state)
+                # if check if there was a winner
+                # Evaluate the response, either we send it to the gameengine
+                # Or the match is finished and we return the match as a result
+
+        return response
+
+    def run_platform(self):
+        #TODO
+        # boardState = self.platform.getMove()
+        # if boardState is None:
+        #
+
+
         
     def main_loop(self):
         print("Get ready to rumble!!!")
@@ -56,4 +101,4 @@ class ProjectSE:
 
 
 if __name__ == "__main__":
-    ProjectSE().start()
+    ProjectSE().init()
