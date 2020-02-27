@@ -15,8 +15,10 @@ class BoardState:
 
 
 """ Proxy module which handles the communication between Game Engine and Game Platform modules """
+
+
 class GameManager:
-    def __init__(self, ):
+    def __init__(self):
         """
         Sets up the connection, if the creation of the game manager doesn't work
         make sure you are on the same network, have the same ip and port on server and manager
@@ -37,12 +39,13 @@ class GameManager:
         self.socket.send(message_b)           # Send the game state/move
         print("Message sent!")
         
-    def recv(self, dtype = "np_array"):
+    def recv(self, dtype = "list"):
         """
-        A function for recieving a message 
+        A function for recieving a message and turning it from bytes to 
+        list or string, depending on the input
         """
         message_recieved = self.socket.recv(1024)
-        if dtype == "np_array":
+        if dtype == "list":
             message_recieved = list(message_recieved)
         # TODO add the necessary transformation of the data
         elif dtype == "string":
@@ -52,6 +55,7 @@ class GameManager:
             exit(0)
         print("message_recieved", message_recieved)
         return message_recieved
+
 
     def send_json(self, board = [0]*24,  diff = 1, index_map = None, turn = 0, visual = None):
         """
@@ -93,6 +97,22 @@ class GameManager:
         print(message_json_b)
         self.socket.send(message_json_b)           # Send the game state/move
         print("Message sent!")
+
+    def make_move(self, board, turn, difficulty):
+        """
+        Function to be called when playing a Player vs AI game
+        """
+        board, difficulty = self.decode(board, difficulty)
+        self.send([board, difficulty, turn])
+        board, difficulty = self.recv()
+
+
+    def decode(self, board, difficulty):
+        """
+        Function for decoding the information that is to be sent to the 
+        game engine.
+        """
+        return board, difficulty
 
     def close(self):
         """

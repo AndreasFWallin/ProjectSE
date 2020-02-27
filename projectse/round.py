@@ -1,6 +1,7 @@
 
 class Round:
-  """ A Gameround with responsibility for keeping track of the status of a single game round  """
+  """ A Gameround with responsibility for keeping track of the status of 
+  a single game round  """
   def __init__(self, matches, configuration):
     self.matches = matches
     self.cfg = configuration
@@ -21,6 +22,10 @@ class Round:
     return self.unplayed_matches
 
   def set_next_match(self):
+    """
+    Sets the next match to be played in the round and removes the previous match
+    from the queue
+    """
     if self.unplayed_matches != []:
       if self.current_match != None:
         self.played_matches.append(self.current_match)
