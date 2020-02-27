@@ -13,7 +13,7 @@ class TournamentDrawer:
     def drawResultTable(self):
         """ Prints the data stored in the 2D-array self.results(contains only 1/*/0 etc)
          together with the player names in the list self.list_players """
-        col_length = 12
+        col_length = 10
         division_rows="|-" + ("-"*(col_length+2) + "|")*(len(self.list_players) + 2)
 
 
@@ -28,7 +28,7 @@ class TournamentDrawer:
 
         for player in self.list_players:
             print("|", player.name, " "*(col_length - len(player.name)), end="")
-        print("|","Total score"," "*(col_length - len("Total score ")),"|",end="\n")
+        print("|","Tot score"," "*(col_length - len("Tot score ")),"|",end="\n")
         print(division_rows)
 
         #Rows
