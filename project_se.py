@@ -14,6 +14,13 @@ class MockPlatform:
     def get_menu_choice(self):
         return "Singleplayer"
 
+    def play(self,board):
+        board.finished = True
+        return board
+
+    def setup(self,match):
+        print("Setting up platform with player infos")
+
 
 class ProjectSE:
     def __init__(self):
@@ -49,13 +56,17 @@ class ProjectSE:
         while choice != "Quit":
             if choice == "Tournament":
                 players_cfg = self.cb.query_settings()
-                tournament = Tournament(players_cfg)
-                self.play_tournament(tournament)
+                retry = True
+                while retry:
+                    tournament = Tournament(players_cfg)
+                    self.play_tournament(tournament)
+                    retry = tournament.ask_retry()
             elif choice == "Single":
                 self.play_match()
             else:
                 raise NotImplementedError("No such choice")
-            choice = self.platform.get_menu_choice()
+            # choice = self.platform.get_menu_choice()
+            choice = self.intro_menu_choice()
 
         self.exit()
 
@@ -64,19 +75,22 @@ class ProjectSE:
         self.platform.setup(match)
 
     def play_tournament(self, tournament):
-        round = tournament.get_next_round()
+        round = tournament.get_current_round()
+        tournament.print_round()
         while round is not None:
-            match = tournament.get_next_match()
+            match = tournament.get_current_match()
             while match is not None:
                 # AI vs AI is determined by tournament and not actually played.
+                match.print_playing()
                 if match.only_ai():
                     winner = tournament.aiplay(match)
                 else:
                     winner = self.play_match(match)
                 tournament.set_result(winner)
                 match = tournament.get_next_match()
+            tournament.tournamentdrawer.drawResultTable()
             round = tournament.get_next_round()
-        print("Tournament completed")
+        return tournament.stop_tournament()
 
     def play_match(self, match) -> Player:
         """
@@ -90,10 +104,14 @@ class ProjectSE:
             if board_state.ai_turn():
                 board_state = self.game_mgr.make_move(board_state)
             board_state = self.platform.play(board_state)
-
         winner = board_state.get_winner()
-        return winner
-
+        if winner == "Black":
+            return match.get_black_player()
+        elif winner == "White":
+            return match.get_white_player()
+        else:
+            # It's a draw!
+            return None
 
     def main_loop(self):
         print("Get ready to rumble!!!")

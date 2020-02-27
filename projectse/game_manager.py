@@ -3,15 +3,18 @@ import json
 
 class BoardState:
 
+    def __init__(self):
+        self.finished = False
+
     def is_finished(self):
         #TODO: THIS IS DUMMY
-        return False
+        return self.finished
 
     def ai_turn(self):
         return False
 
     def get_winner(self):
-        return True
+        return "Black"
 
 
 """ Proxy module which handles the communication between Game Engine and Game Platform modules """
