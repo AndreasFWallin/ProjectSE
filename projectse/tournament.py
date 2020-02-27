@@ -38,7 +38,7 @@ class Tournament:
                 current_round = Round(self.matches_in_round, self.config)
                 print("This is round number, ", i+1)
                 self.print_round()
-                self.play_matches()
+                self.play_matches(current_round)
                 self.tournamentdrawer.drawResultTable()
         self.stop_tournament()
             
