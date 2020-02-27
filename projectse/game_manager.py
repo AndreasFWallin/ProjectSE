@@ -4,7 +4,7 @@ import json
 
 """ Proxy module which handles the communication between Game Engine and Game Platform modules """
 class GameManager:
-    def __init__(self, ip_adress='192.168.0.101', port=3005):
+    def __init__(self, ip_adress='130.242.97.115', port=3005):
         """
         Sets up the connection, if the creation of the game manager doesn't work
         make sure you are on the same network, have the same ip and port on server and manager

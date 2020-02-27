@@ -1,15 +1,10 @@
 
 """ Highest level and entrypoint of the ProjectSE / UU-game application """
 import os
-import sys
-p = os.path.abspath("")
-p.encode('unicode_escape')
-print(p)
-sys.path.insert(0, p)
-from player import *
-from configuration import *
-from game_manager import *
-from tournament import *
+from projectse.player import *
+from projectse.configuration import *
+from projectse.game_manager import *
+from projectse.tournament import *
 
 
 class ProjectSE:

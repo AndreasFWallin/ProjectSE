@@ -1,10 +1,10 @@
 from random import randrange
 
-from configuration import *
-from player import *
-from tournament_scheduler import *
-from round import *
-from tournament_drawer import *
+from projectse.configuration import *
+from projectse.player import *
+from projectse.tournament_scheduler import *
+from projectse.round import *
+from projectse.tournament_drawer import *
 
 
 class Tournament:
@@ -21,9 +21,7 @@ class Tournament:
         self.most_wins = -1
         self.most_white_wins = -1
         self.all_matches = []
-        self.match_round = None
-        self.current_round = None
-        self.current_match = None
+        self.matches_in_round = None
         self.match = None
         self.winner = None
 
@@ -35,36 +33,41 @@ class Tournament:
         """
 
         for i in range(self.num_players):
-            self.match_round = self.tournament_scheduler.get_round(i+1)
-            if self.match_round != None: # 
-                self.current_round = Round(self.match_round, self.config)
+            self.matches_in_round = self.tournament_scheduler.get_round(i+1)
+            if self.matches_in_round != None:  # Odd # players 
+                current_round = Round(self.matches_in_round, self.config)
                 print("This is round number, ", i+1)
                 self.print_round()
-                self.play_matches()
-                # self.tournament_drawer()
-                print("         Test for updating tournament table. 1 and 3 won the game")
-                self.tournamentdrawer.updateTable(i,[1,3])
+                self.play_matches(current_round)
+                self.tournament_drawer(current_round)
+                # print("         Test for updating tournament table. 1 and 3 won the game")
+                # self.tournamentdrawer.updateTable(i,[1,3])
         self.stop_tournament()
             
             
     
     def print_round(self):
-        for i in range(len(self.match_round)):
-            print("In match", i+1, self.list_players[self.match_round[i][0]-1].name, "as white, versus",
-            self.list_players[self.match_round[i][1]-1].name, " as black")
+        for i in range(len(self.matches_in_round)):
+            print("In match", i+1, self.list_players[self.matches_in_round[i][0]-1].name, "as white, versus",
+            self.list_players[self.matches_in_round[i][1]-1].name, " as black")
 
-    def play_matches(self):
+    def play_matches(self, current_round):
         """
         Here the actual matches (1v1) are played in a round
         """
-        for i in range(len(self.current_round.matches)):
-            self.all_matches += self.current_round.unplayed_matches
-            self.current_round.set_next_match()
-            self.current_match = self.current_round.get_current_match()
-            white = self.current_match.get_white_player()
-            black = self.current_match.get_black_player()
-            print("Now playing, ", self.current_match.get_white_player_name(),
-            " as white, versus ", self.current_match.get_black_player_name(),
+        for i in range(len(current_round.matches)):
+            print("Press enter to play game, press 'Q' to quit")
+            inp = input()
+            if (inp ==  'Q'):
+                print("Game quit.")
+                exit()
+            self.all_matches += current_round.unplayed_matches
+            current_round.set_next_match()
+            current_match = current_round.get_current_match()
+            white = current_match.get_white_player()
+            black = current_match.get_black_player()
+            print("Now playing, ", current_match.get_white_player_name(),
+            " as white, versus ", current_match.get_black_player_name(),
             "as black")
             print()
             
@@ -76,7 +79,7 @@ class Tournament:
                     current_winner.won_game_white()
                 else:
                     current_winner.won_game() 
-                self.current_match.winner = current_winner
+                current_match.winner = current_winner
             else: 
                 print("PLACEHOLDER FOR ACTUAL GAME")
                 # TODO add the actual game where the match is being played
@@ -85,8 +88,8 @@ class Tournament:
                     current_winner.won_game_white()
                 else:
                     current_winner.won_game() 
-                self.current_match.winner = current_winner
-            print(self.current_match.winner.name, "won the game. \n \n")
+                current_match.winner = current_winner
+            print(current_match.winner.name, "won the game. \n \n")
 
     def stop_tournament(self):
         """
@@ -99,9 +102,10 @@ class Tournament:
                 self.winner = player
                 self.most_wins = player.wins
             elif player.wins == self.most_wins: # Player that won the match is tournament winner
-                print("Head to head", player, self.winner)
+                # print("Head to head", player, self.winner)
                 match = self.find_match(self.winner, player)
                 if match.winner == player:
+                   # print(match.winner.name)
                    self.winner == player
                    self.most_wins = player.wins
         print("The winner is ", self.winner.name, " with ", self.winner.wins, " wins")
@@ -182,12 +186,12 @@ class Tournament:
 
 
 
-    def tournament_drawer(self):
+    def tournament_drawer(self, current_round):
         """
         Not in use, prints a table try it by uncommenting in start tournament
         """
         print("TBD = To Be Decided")
-        self.all_matches += self.current_round.played_matches
+        self.all_matches += current_round.played_matches
         print(end=" " * 15)
         for player in self.list_players:
             print(player.name, end=" " * (15 - len(player.name)))

@@ -1,9 +1,5 @@
 import sys
-<<<<<<< HEAD
 sys.path.insert(0, r"C:\UU\VT20\SEPM\updated\ProjectSE")
-=======
-sys.path.insert(0, r"C:\UU\VT20\SEPM\updated")
->>>>>>> fd31481487725b337dbe058af168a5af20bdfa97
 import unittest
 from projectse.game_manager import GameManager as GM
 
@@ -37,7 +33,7 @@ class TestGameManager(unittest.TestCase):
         message_board = [1]*24
         gm.send_json(message_board)
         recv_msg = gm.recv_json(dtype="json")
-        message_board[0] = 2
+        # message_board[0] = 2
         self.assertEqual(recv_msg["board"], message_board)
         gm.close()
 
