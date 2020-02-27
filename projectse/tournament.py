@@ -38,10 +38,8 @@ class Tournament:
                 current_round = Round(self.matches_in_round, self.config)
                 print("This is round number, ", i+1)
                 self.print_round()
-                self.play_matches(current_round)
-                self.tournament_drawer(current_round)
-                # print("         Test for updating tournament table. 1 and 3 won the game")
-                # self.tournamentdrawer.updateTable(i,[1,3])
+                self.play_matches()
+                self.tournamentdrawer.drawResultTable()
         self.stop_tournament()
             
             
@@ -77,8 +75,10 @@ class Tournament:
                 current_winner = self.aiplay(white, black)
                 if current_winner == white:
                     current_winner.won_game_white()
+                    current_match.loser = black
                 else:
-                    current_winner.won_game() 
+                    current_winner.won_game()
+                    current_match.loser = white
                 current_match.winner = current_winner
             else: 
                 print("PLACEHOLDER FOR ACTUAL GAME")
@@ -86,10 +86,13 @@ class Tournament:
                 current_winner = black  # CHANGE WHEN ACTUAL GAMES IS ADDED
                 if current_winner == white:
                     current_winner.won_game_white()
+                    current_match.loser = black
                 else:
-                    current_winner.won_game() 
+                    current_winner.won_game()
+                    current_match.loser = white
                 current_match.winner = current_winner
             print(current_match.winner.name, "won the game. \n \n")
+            self.tournamentdrawer.updateTable(current_match.winner, current_match.loser)
 
     def stop_tournament(self):
         """
@@ -118,7 +121,8 @@ class Tournament:
 
     def aiplay(self, player1, player2):
         """
-        If a 2 players are AI players the will be determined according to a probability
+        If a 2 players are AI players the outcome
+        will be determined according to a probability
         """
     
         if(player1.difficulty==AIDifficulty.low and player2.difficulty==AIDifficulty.low):
@@ -212,4 +216,3 @@ class Tournament:
                     if found == False:
                         print("TBD", end=" " * (12))
             print()
-        
