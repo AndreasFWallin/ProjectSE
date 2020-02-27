@@ -20,6 +20,11 @@ class ConfigurationBuilder:
     def get_input(self, msg):
         return input(msg)
 
+    def parse_platform_singleplay_to_cfg(self,setting_obj):
+        """ Converts settingsobject to
+        """
+
+
     def get_number_input(self, msg, min, max):
         err_msg = "\nError: Input must be an integer between {}-{} ".format(min,max)
         #print("get num input")
@@ -56,7 +61,7 @@ class ConfigurationBuilder:
 
         return value
 
-    def query_players(self):
+    def query_settings(self):
         """ menu for dealing with adding all the players to the configuration """
         """ First number of players, then number of human players, and then difficulty 
             for each AI-player """
@@ -82,6 +87,7 @@ class ConfigurationBuilder:
             player_list.append(Player(name))
         self.configure_players(player_list)
 
+        return self.cfg
 
     def configure_players(self,player_list):
         self.cfg.set_players(player_list)
