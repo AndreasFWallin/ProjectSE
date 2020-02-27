@@ -42,6 +42,10 @@ class Match:
     self.black_player = self.cfg.players[players[1] - 1]
     self.winner = None
 
+  def only_ai(self):
+    return self.black_player.is_ai() and self.white_player.is_ai()
+
+
   def get_winner(self):
     return self.winner
 

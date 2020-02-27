@@ -1,15 +1,29 @@
 import socket
 import json
 
+class BoardState:
+
+    def is_finished(self):
+        #TODO: THIS IS DUMMY
+        return False
+
+    def ai_turn(self):
+        return False
+
+    def get_winner(self):
+        return True
+
 
 """ Proxy module which handles the communication between Game Engine and Game Platform modules """
 class GameManager:
-    def __init__(self, ip_adress='192.168.0.101', port=3005):
+    def __init__(self, ):
         """
         Sets up the connection, if the creation of the game manager doesn't work
         make sure you are on the same network, have the same ip and port on server and manager
         """
         self.socket = socket.socket()           # Allocating a socket 
+
+    def connect(self,ip_adress='192.168.0.101', port=3005):
         self.socket.connect((ip_adress, port))  # Connecting the socket to a server, given an ip and port
         print("Connection to server established")
 
