@@ -26,6 +26,40 @@ class Tournament:
         self.winner = None
 
 
+    def get_current_round(self, round_num):
+        """
+        Here the tournament is started and played.
+        """
+        self.matches_in_round = self.tournament_scheduler.get_round(round_num+1)
+        if self.matches_in_round != None:  # Odd # players 
+            current_round = Round(self.matches_in_round, self.config)
+            print("This is round number, ", round_num)
+            return current_round   
+
+    def get_next_match(self, current_round, match_num):
+        print("Press enter to play game, press 'Q' to quit")
+        inp = input()
+        if (inp ==  'Q'):
+            print("Game quit.")
+            exit()
+        self.all_matches += current_round.unplayed_matches
+        current_round.set_next_match()
+        current_match = current_round.get_current_match()
+        return current_match
+
+    def set_result(self, current_winner, current_match):
+        white = current_match.get_white_player()
+        black = current_match.get_black_player()
+        if current_winner == white:
+            current_winner.won_game_white()
+            current_match.loser = black
+        elif current_winner == black:
+            current_winner.won_game()
+            current_match.loser = white
+        current_match.winner = current_winner
+
+
+
 
     def start_tournament(self):
         """

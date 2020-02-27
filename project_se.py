@@ -45,7 +45,7 @@ class ProjectSE:
         print("Get ready to rumble!!!")
         self.t = Tournament(self.cb.cfg)
         self.t.start_tournament()
-
+        
     def exit(self):
         print("Game exited")
 

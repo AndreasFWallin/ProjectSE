@@ -83,11 +83,20 @@ class GameManager:
         print("Message sent!")
 
     def make_move(self, board, turn, difficulty):
-            decode(board, difficulty)
+        """
+        Function to be called when playing a Player vs AI game
+        """
+        board, difficulty = self.decode(board, difficulty)
+        self.send([board, difficulty, turn])
+        board, difficulty = self.recv()
 
 
     def decode(self, board, difficulty):
-        pass
+        """
+        Function for decoding the information that is to be sent to the 
+        game engine.
+        """
+        return board, difficulty
 
     def close(self):
         """
