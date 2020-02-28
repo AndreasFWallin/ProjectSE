@@ -1,5 +1,4 @@
 import socket
-import json
 
 class BoardState:
 
@@ -21,10 +20,11 @@ class BoardState:
 
 
 class GameManager:
+
     def __init__(self):
         """
         Sets up the connection, if the creation of the game manager doesn't work
-        make sure you are on the same network, have the same ip and port on server and manager
+        make sure you are on the same networ, have the same ip and port on server and manager
         """
         self.socket = socket.socket()           # Allocating a socket 
 
@@ -36,8 +36,8 @@ class GameManager:
         """
         A function for turning a message into bytes and then send it,
         the message has to be converted at the destination, e.g str(message, 'utf-8').
-        """ 
-        message_b = bytes(message, 'utf-8')            # Convert the message to bytes
+        """
+        message_b = bytes(message)            # Convert the message to bytes
         print(message_b)
         self.socket.send(message_b)           # Send the game state/move
         print("Message sent!")

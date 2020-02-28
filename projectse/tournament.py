@@ -142,7 +142,7 @@ class Tournament:
                     current_match.loser = white
                 current_match.winner = current_winner
             print(current_match.winner.name, "won the game. \n \n")
-            self.tournamentdrawer.updateTable(current_match.winner, current_match.loser)
+            self.tournamentdrawer.updateTable(current_match.winner, current_match.loser, False)
 
     def stop_tournament(self):
         """
