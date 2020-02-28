@@ -53,10 +53,8 @@ class TournamentTestCase(unittest.TestCase):
         # its random after all.
         self.assertLess(prob_diff, uncertainty_interval/100,str(ai1.difficulty)+"vs"+str(ai2.difficulty))
 
-
-
-
     def test_tournament(self):
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -17,8 +17,14 @@ class Player:
         self.wins += 1
         self.white_wins += 1
 
+    def is_ai(self):
+        return False
+
 class AIPlayer(Player):
     """ Player controlled by a computer """
     def __init__(self, name, difficulty):
         self.difficulty = difficulty
         super().__init__(name)
+
+    def is_ai(self):
+        return True
