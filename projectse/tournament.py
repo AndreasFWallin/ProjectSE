@@ -144,7 +144,7 @@ class Tournament:
             print(current_match.winner.name, "won the game. \n \n")
             self.tournamentdrawer.updateTable(current_match.winner, current_match.loser, False)
 
-    def stop_tournament(self):
+   def stop_tournament(self):
         """
         The end of tournament, where the winner is announced and
         the tournament can be replayed if input is given 
@@ -161,7 +161,11 @@ class Tournament:
                    # print(match.winner.name)
                    self.winner == player
                    self.most_wins = player.wins
-        print("The winner is ", self.winner.name, " with ", self.winner.wins, " wins")
+                elif match.winner== None:
+                    if self.winner.white_played < player.white_played:
+                        self.winner=player
+                    
+        print("The winner is ", self.winner.name,   " with ", self.winner.wins, " wins")
 
     def ask_retry(self):
         print("Do you want to play again with the same setup, input 'R' or, input any other button to exit:")
