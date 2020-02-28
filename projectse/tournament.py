@@ -63,9 +63,10 @@ class Tournament:
         next_match = self.get_current_round().get_next_match()
         return next_match
 
-    def set_result(self, current_winner):
+ def set_result(self, current_winner):
         #TODO: Most of this should be done in Match class for cohesions sake
         white = self.get_current_match().get_white_player()
+        white.played_white()
         black = self.get_current_match().get_black_player()
         if current_winner == white:
             current_winner.won_game_white()
@@ -73,10 +74,17 @@ class Tournament:
         elif current_winner == black:
             current_winner.won_game()
             self.get_current_match().loser = white
+        else:
+            
+            white.tie_game()
+            black.tie_game()
+            
         self.get_current_match().winner = current_winner
         print(self.get_current_match().winner.name, "won the game. \n \n")
         self.tournamentdrawer.updateTable(self.get_current_match().winner, self.get_current_match().loser)
 
+    def is_ai(self):
+        return True
     def start_tournament(self):
         """
         Here the tournament is started and played.
