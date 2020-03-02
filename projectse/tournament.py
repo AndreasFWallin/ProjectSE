@@ -63,7 +63,7 @@ class Tournament:
         next_match = self.get_current_round().get_next_match()
         return next_match
 
- def set_result(self, current_winner):
+    def set_result(self, current_winner):
         #TODO: Most of this should be done in Match class for cohesions sake
         white = self.get_current_match().get_white_player()
         white.played_white()
@@ -152,7 +152,7 @@ class Tournament:
             print(current_match.winner.name, "won the game. \n \n")
             self.tournamentdrawer.updateTable(current_match.winner, current_match.loser, False)
 
-   def stop_tournament(self):
+    def stop_tournament(self):
         """
         The end of tournament, where the winner is announced and
         the tournament can be replayed if input is given 
