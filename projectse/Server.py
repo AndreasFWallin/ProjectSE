@@ -57,35 +57,4 @@ if __name__ == "__main__":
     serv.close()
 
 
-"""
-    # Create a socket object 
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)    
-    
-    # connect to the server on local computer 
-    s.bind(('192.168.0.101', port))
 
-    while True:
-        c, addr = s.accept()
-        print("Connection established!")
-        message = c.recv(1024)
-        if False: # is_json(message):
-            json_msg = json.loads(message.decode("utf-8"))
-            json_msg["board"][0] = "2"
-            json_msg = json.dumps(json_msg)
-            message = bytes(json_msg, "utf-8")
-        
-        print("Recieved message", message)
-        if (message):
-            print("sending")
-            c.send(message)
-            message = None
-        print("type 'stop' to quit server, press enter to keep recieving")
-        if (input() == "stop"):
-            break
-
-# receive data from the server 
-
-# close the connection 
-    c.close()
-
-"""

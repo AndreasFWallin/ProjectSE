@@ -15,55 +15,85 @@ class Tournament:
         # Below the players are put in a list first as strings and AIs are after encoded as ints
         self.list_players = config.players
         self.num_players = len(self.list_players)
-        self.tournament_scheduler = TournamentScheduler(self.num_players)
+
         self.tournamentdrawer = TournamentDrawer(self.list_players)
         self.round_num = 0
+        self.match_num = 0
         self.most_wins = -1
         self.most_white_wins = -1
         self.all_matches = []
         self.matches_in_round = None
         self.match = None
         self.winner = None
+        self.rounds = self.get_model_as_rounds()
 
 
-    def get_current_round(self, round_num):
-        """
-        Here the tournament is started and played.
-        """
-        self.matches_in_round = self.tournament_scheduler.get_round(round_num+1)
-        if self.matches_in_round != None:  # Odd # players 
-            current_round = Round(self.matches_in_round, self.config)
-            print("This is round number, ", round_num)
-            return current_round   
+    def get_model_as_rounds(self):
+        """ Creates a list of rounds containing all the matches """
+        round_list = []
+        scheduler = TournamentScheduler(self.num_players)
+        for round in scheduler.schedule:
+            r = Round()
+            for white_inx, black_inx in round:
+                # List_players is 0 indexed but the indexes from the scheduler is 1 indexed.
+                match = Match(self.list_players[white_inx-1],self.list_players[black_inx-1])
+                r.add_match(match)
+            round_list.append(r)
+        return round_list
 
-    def get_next_match(self, current_round, match_num):
+    def get_current_match(self):
+        return self.get_current_round().get_current_match()
+
+    def get_current_round(self):
+        return self.rounds[self.round_num]
+
+    def get_next_round(self):
+        if self.round_num < len(self.rounds)-1:
+            self.round_num+=1
+            return self.get_current_round()
+        else:
+            return None
+
+    def get_next_match(self):
         print("Press enter to play game, press 'Q' to quit")
         inp = input()
         if (inp ==  'Q'):
             print("Game quit.")
             exit()
-        self.all_matches += current_round.unplayed_matches
-        current_round.set_next_match()
-        current_match = current_round.get_current_match()
-        return current_match
+        next_match = self.get_current_round().get_next_match()
+        return next_match
 
-    def set_result(self, current_winner, current_match):
-        white = current_match.get_white_player()
-        black = current_match.get_black_player()
+    def set_result(self, current_winner):
+        #TODO: Most of this should be done in Match class for cohesions sake
+        is_draw = False
+        white = self.get_current_match().get_white_player()
+        white.played_white()
+        black = self.get_current_match().get_black_player()
         if current_winner == white:
             current_winner.won_game_white()
-            current_match.loser = black
+            self.get_current_match().loser = black
         elif current_winner == black:
             current_winner.won_game()
-            current_match.loser = white
-        current_match.winner = current_winner
-        print(current_match.winner.name, "won the game. \n \n")
-        self.tournamentdrawer.updateTable(current_match.winner, current_match.loser)
+            self.get_current_match().loser = white
+        else:
+            is_draw = True
+            white.tie_game()
+            black.tie_game()
+            
+        self.get_current_match().winner = current_winner
+        print(self.get_current_match().winner.name, "won the game. \n \n")
+        self.tournamentdrawer.updateTable(self.get_current_match().winner,
+                                          self.get_current_match().loser,
+                                          is_draw)
 
+    def is_ai(self):
+        return True
+
+    """
     def start_tournament(self):
-        """
+        
         Here the tournament is started and played.
-        """
+       
 
         for i in range(self.num_players):
             self.matches_in_round = self.tournament_scheduler.get_round(i+1)
@@ -74,13 +104,13 @@ class Tournament:
                 self.play_matches(current_round)
                 self.tournamentdrawer.drawResultTable()
         self.stop_tournament()
-            
+     """
             
     
     def print_round(self):
-        for i in range(len(self.matches_in_round)):
-            print("In match", i+1, self.list_players[self.matches_in_round[i][0]-1].name, "as white, versus",
-            self.list_players[self.matches_in_round[i][1]-1].name, " as black")
+        for num, match in enumerate(self.get_current_round().matches):
+            print("In match", num+1, match.get_white_player_name(), "as white, versus",
+            match.get_black_player_name(), " as black")
 
     def play_matches(self, current_round):
         """
@@ -125,7 +155,7 @@ class Tournament:
                     current_match.loser = white
                 current_match.winner = current_winner
             print(current_match.winner.name, "won the game. \n \n")
-            self.tournamentdrawer.updateTable(current_match.winner, current_match.loser)
+            self.tournamentdrawer.updateTable(current_match.winner, current_match.loser, False)
 
     def stop_tournament(self):
         """
@@ -144,20 +174,28 @@ class Tournament:
                    # print(match.winner.name)
                    self.winner == player
                    self.most_wins = player.wins
-        print("The winner is ", self.winner.name, " with ", self.winner.wins, " wins")
+                elif match.winner== None:
+                    if self.winner.white_played < player.white_played:
+                        self.winner=player
+                    
+        print("The winner is ", self.winner.name,   " with ", self.winner.wins, " wins")
 
+    def ask_retry(self):
         print("Do you want to play again with the same setup, input 'R' or, input any other button to exit:")
         inp = input()
-        if (inp == "R"):
-            self.start_tournament()
-            print("Reinstating the tournament")
+        if inp == "R":
+            return True
+        else:
+            return False
 
-    def aiplay(self, player1, player2):
+    def aiplay(self, match):
         """
         If a 2 players are AI players the outcome
         will be determined according to a probability
         """
-    
+        player1 = match.get_white_player()
+        player2 = match.get_black_player()
+
         if(player1.difficulty==AIDifficulty.low and player2.difficulty==AIDifficulty.low):
             if(randrange(100)<50):
                 return player1
@@ -210,11 +248,18 @@ class Tournament:
             else:
                 return player2
 
+    def get_all_matches(self):
+        a = []
+        for round in self.rounds:
+            for matches in round.get_matches():
+                a.append(matches)
+        return a
+
     def find_match(self, player1, player2):
         """
         Finds the match that had player1 and player2  and returns it
         """
-        for match in self.all_matches:
+        for match in self.get_all_matches():
             if (player1 == match.white_player or player1 == match.black_player) and (player2 == match.white_player or player2 == match.black_player):
                 return match
         print("ERROR, MATCH NOT FOUND THIS SHOULD ONLY BE USED AT THE END")

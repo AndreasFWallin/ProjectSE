@@ -9,13 +9,21 @@ class Player:
         self.wins = 0
         self.white_wins = 0
         self.result = False
-
+        self.white_played = 0
     def won_game(self):
         self.wins += 1
-
+    def tie_game(self):
+        self.wins +=0.5
+        
     def won_game_white(self):
         self.wins += 1
         self.white_wins += 1
+    
+    def played_white(self):
+        self.white_played +=1
+    
+    def is_ai(self):
+        return False
 
 class AIPlayer(Player):
     """ Player controlled by a computer """

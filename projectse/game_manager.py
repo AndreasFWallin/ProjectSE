@@ -1,15 +1,34 @@
 import socket
-import json
+
+class BoardState:
+
+    def __init__(self):
+        self.finished = False
+
+    def is_finished(self):
+        #TODO: THIS IS DUMMY
+        return self.finished
+
+    def ai_turn(self):
+        return False
+
+    def get_winner(self):
+        return "Black"
 
 
 """ Proxy module which handles the communication between Game Engine and Game Platform modules """
+
+
 class GameManager:
-    def __init__(self, ip_adress='130.242.97.115', port=3005):
+
+    def __init__(self):
         """
         Sets up the connection, if the creation of the game manager doesn't work
-        make sure you are on the same network, have the same ip and port on server and manager
+        make sure you are on the same networ, have the same ip and port on server and manager
         """
         self.socket = socket.socket()           # Allocating a socket 
+
+    def connect(self,ip_adress='192.168.0.101', port=3005):
         self.socket.connect((ip_adress, port))  # Connecting the socket to a server, given an ip and port
         print("Connection to server established")
 
@@ -17,8 +36,8 @@ class GameManager:
         """
         A function for turning a message into bytes and then send it,
         the message has to be converted at the destination, e.g str(message, 'utf-8').
-        """ 
-        message_b = bytes(message, 'utf-8')            # Convert the message to bytes
+        """
+        message_b = bytes(message)            # Convert the message to bytes
         print(message_b)
         self.socket.send(message_b)           # Send the game state/move
         print("Message sent!")
