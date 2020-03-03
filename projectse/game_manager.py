@@ -4,6 +4,8 @@ class BoardState:
 
     def __init__(self):
         self.finished = False
+        # Example 7x7 array
+        self.board = [[0 for i in range(7)] for x in range(7)]
 
     def is_finished(self):
         #TODO: THIS IS DUMMY
