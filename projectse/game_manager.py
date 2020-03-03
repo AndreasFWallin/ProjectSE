@@ -1,4 +1,5 @@
 import socket
+import configuration as *
 
 class BoardState:
 
@@ -6,10 +7,11 @@ class BoardState:
         self.finished = False
 
     def is_finished(self):
-        #TODO: THIS IS DUMMY
         return self.finished
 
-    def ai_turn(self):
+    def ai_turn(self, player):
+        if isinstance(player, AIPlayer)
+            return True
         return False
 
     def get_winner(self):
@@ -60,12 +62,12 @@ class GameManager:
         return message_recieved
 
 
-    def send_json(self, board = [0]*24,  diff = 1, index_map = None, turn = 0, visual = None):
+    def send_json(self, board = [-1]*24,  diff = 1, index_map = None, turn = 0, visual = None):
         """
         A function for turning a message into bytes and then sending it,
         the message has to be converted at the destination, e.g str(message, 'utf-8').
         """ 
-        message = {"board":board, "diff":diff, "index_map":index_map, "turn":0, "visual":visual}
+        message = {"Board":{x:y for x,y in enumerate(board,0)}, "Difficulty":diff, "Index Map":index_map, "Turn":0, "Visual":visual}
         message_json = json.dumps(message)
         message_json_b = bytes(message_json, 'utf-8')            # Convert the message to bytes
         print(message_json_b)
@@ -108,6 +110,7 @@ class GameManager:
         board, difficulty = self.decode(board, difficulty)
         self.send([board, difficulty, turn])
         board, difficulty = self.recv()
+        return board, difficulty
 
 
     def decode(self, board, difficulty):

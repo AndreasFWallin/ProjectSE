@@ -6,6 +6,7 @@ from projectse.configuration import *
 from projectse.game_manager import *
 from projectse.tournament import *
 
+
 class MockPlatform:
 
     def initialize(self):
@@ -99,11 +100,16 @@ class ProjectSE:
         Winning player is returned, if draw None is returned.
         """
         self.setup_platform(match)
-        board_state = BoardState()
+        board_state = BoardState(board)
         while not board_state.is_finished():
-            if board_state.ai_turn():
-                board_state = self.game_mgr.make_move(board_state)
-            board_state = self.platform.play(board_state)
+            if board_state.ai_turn(match.get_white_player()):
+                board_state = self.game_mgr.make_move(board_state, match.get_white_player().difficulty)
+            else:
+                board_state = self.platform.play(board_state)
+            if board_state.ai_turn(match.get_black_player()):
+                board_state = self.game_mgr.make_move(board_state, match.get_black_player().difficulty)
+            else:
+                board_state = self.platform.play(board_state)
         winner = board_state.get_winner()
         if winner == "Black":
             return match.get_black_player()

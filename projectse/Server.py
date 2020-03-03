@@ -1,6 +1,7 @@
 # Import socket module 
 import socket
-import json                
+import json   
+import GameEngine12             
 
 class Server():
     def __init__(self, address, port=3005):
@@ -47,12 +48,18 @@ class Server():
             return False
         return True
 
+
 if __name__ == "__main__":
     serv = Server('192.168.0.101')
     msg = None
     while (True):
         serv.accept()
         msg = serv.recv()
+        with open('board.json', 'w', encoding='utf-8') as f:
+            json.dump(msg, f)
+        GameEngine12.runUUGame('board.json')
+        with open ('board.json', 'r', encoding='utf-8') as f:
+            msg = json.load(f)
         serv.send(msg)
     serv.close()
 
