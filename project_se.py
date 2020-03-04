@@ -43,10 +43,10 @@ class MockPlatform:
 
 
 class ProjectSE:
-    def __init__(self):
-        self.cb = ConfigurationBuilder()
-        self.platform = MockPlatform()
-        self.game_mgr = GameManager()
+    def __init__(self,cb=ConfigurationBuilder(),pltfrm=MockPlatform(),gm=GameManager()):
+        self.cb = cb
+        self.platform = pltfrm
+        self.game_mgr = gm
         #TODO: wait with this, if no connection we cant play
         # self.game_mgr.connect()
 
@@ -95,6 +95,8 @@ class ProjectSE:
         self.platform.setup(match)
 
     def play_tournament(self, tournament):
+        """ Decides and makes call to start the matches inside all rounds of the tournament sequentially
+        Starting with the first rounds matches. AIvsAI matches are determined by chance """
         round = tournament.get_current_round()
         tournament.print_round()
         while round is not None:

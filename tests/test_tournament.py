@@ -13,7 +13,7 @@ class TournamentTestCase(unittest.TestCase):
         t = Tournament(MagicMock())
         #Create AI players
 
-        perm = permutations([AIDifficulty.low, AIDifficulty.hi, AIDifficulty.med], 2)
+        perm = permutations([AIDifficulty.low, AIDifficulty.med, AIDifficulty.hi], 2)
         player_combinations=[]
         for p1,p2 in perm:
             ai1 = MagicMock()
@@ -23,8 +23,8 @@ class TournamentTestCase(unittest.TestCase):
             player_combinations.append((ai1,ai2))
             player_combinations.append((ai2,ai1))
 
-        num_matches = 100
-        uncertainty_interval = 30 #in percent
+        num_matches = 300
+        uncertainty_interval = 10 #in percent
 
         #TODO: Rewrite aiplay unittest
         for ai1,ai2 in player_combinations:
@@ -32,28 +32,31 @@ class TournamentTestCase(unittest.TestCase):
             ai1_win_cnt=0
             ai2_win_cnt=0
             for i in range(num_matches):
-                ai_winner = t.aiplay(ai1, ai2) #Returns an AI player
+                match = MagicMock()
+                match.get_black_player.return_value = ai1
+                match.get_white_player.return_value = ai2
+
+                ai_winner = t.aiplay(match) #Returns an AI player
                 self.assertIn(ai_winner, players)
                 if(ai_winner==ai1):
                     ai1_win_cnt+=1
                 else:
                     ai2_win_cnt+=1
-        difficulty_diff = diff_lookup[ai1.difficulty]-diff_lookup[ai2.difficulty]
-        a1_win_ratio={0:0.5,1:0.35,2:0.15}
-        a1_loose_ratio = {0: 0.5, 1: 0.65, 2: 0.85}
+            difficulty_diff = diff_lookup[ai1.difficulty]-diff_lookup[ai2.difficulty]
+            a1_expected_win_ratio={0:0.5,1:0.35,2:0.15}
 
-        actual_ratio = ai1_win_cnt/num_matches
-        #if ai1 is weaker than ai2
-        if difficulty_diff < 0:
-            prob_diff = actual_ratio-a1_loose_ratio[abs(difficulty_diff)]
-        else:
-            prob_diff = actual_ratio-a1_win_ratio[difficulty_diff]
-        prob_diff=abs(prob_diff)
-        #Check that the ratio is close enough to real deal.
-        # its random after all.
-        self.assertLess(prob_diff, uncertainty_interval/100,str(ai1.difficulty)+"vs"+str(ai2.difficulty))
+            actual_ratio = ai1_win_cnt/num_matches
+            #if ai1 is weaker than ai2
+            if difficulty_diff < 0:
+                prob_diff = actual_ratio-a1_expected_win_ratio[abs(difficulty_diff)]
+            else:
+                prob_diff = actual_ratio-(1-a1_expected_win_ratio[difficulty_diff])
+            prob_diff=abs(prob_diff)
+            #Check that the ratio is close enough to real deal.
+            # its random after all.
+            self.assertLess(prob_diff, uncertainty_interval/100,str(ai1.difficulty)+"vs"+str(ai2.difficulty))
 
-    def test_tournament(self):
+    #def test_tournament(self):
 
 
 if __name__ == '__main__':
