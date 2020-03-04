@@ -54,7 +54,7 @@ class TournamentSchedulerTestCase(unittest.TestCase):
         print(t6.get_round(6))
         print(t6.get_round(7))
         print()
-        #self.assertEqual(t3.get_round(6),[(3,2),(5,8),(7,6),(1,4)])
+        self.assertEqual(t3.get_round(5),[(4, 2), (5, 1)])
 
 if __name__ == '__main__':
     unittest.main()
