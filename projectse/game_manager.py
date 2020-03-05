@@ -1,16 +1,21 @@
 import socket
-import configuration as *
+import json
+from configuration import * 
 
 class BoardState:
 
-    def __init__(self):
+    def __init__(self, board, turn, difficulty):
         self.finished = False
+        self.board = board
+        self.turn = turn
+        self.difficulty = difficulty
+
 
     def is_finished(self):
         return self.finished
 
     def ai_turn(self, player):
-        if isinstance(player, AIPlayer)
+        if isinstance(player, AIPlayer):
             return True
         return False
 
@@ -30,23 +35,26 @@ class GameManager:
         """
         self.socket = socket.socket()           # Allocating a socket 
 
-    def connect(self,ip_adress='192.168.0.101', port=3005):
+    def connect(self,ip_adress='192.168.0.102', port=3005):
         self.socket.connect((ip_adress, port))  # Connecting the socket to a server, given an ip and port
         print("Connection to server established")
 
-    def send(self, message):
+    def send(self, message, dtype="list"):
         """
         A function for turning a message into bytes and then send it,
         the message has to be converted at the destination, e.g str(message, 'utf-8').
         """
-        message_b = bytes(message)            # Convert the message to bytes
+        if dtype == "list":
+            message_b = bytes(message)            # Convert the message to bytes
+        if dtype == "string":
+            message_b = bytes(message, 'utf-8')
         print(message_b)
         self.socket.send(message_b)           # Send the game state/move
         print("Message sent!")
         
     def recv(self, dtype = "list"):
         """
-        A function for recieving a message and turning it from bytes to 
+        A function for recieving a message and   turning it from bytes to 
         list or string, depending on the input
         """
         message_recieved = self.socket.recv(1024)
@@ -62,12 +70,13 @@ class GameManager:
         return message_recieved
 
 
-    def send_json(self, board = [-1]*24,  diff = 1, index_map = None, turn = 0, visual = None):
+    def send_json(self, board = [-1]*24,  diff = 2, index_map = None, turn = 0, visual = None, player=1):
         """
         A function for turning a message into bytes and then sending it,
         the message has to be converted at the destination, e.g str(message, 'utf-8').
         """ 
-        message = {"Board":{x:y for x,y in enumerate(board,0)}, "Difficulty":diff, "Index Map":index_map, "Turn":0, "Visual":visual}
+        message = {"Board":board, "Difficulty":diff, "Index Map":index_map,
+                 "Turn":0, "Visual":visual, "Player":player}
         message_json = json.dumps(message)
         message_json_b = bytes(message_json, 'utf-8')            # Convert the message to bytes
         print(message_json_b)
@@ -81,44 +90,46 @@ class GameManager:
         """
         message_recieved = self.socket.recv(1024)
         if dtype == "json":
-            message_recieved = json.loads(message_recieved) 
+            msg = json.loads(message_recieved.decode('utf-8'))
         else:
             print("Warning, incorrect option")
             exit(0)
         print("message_recieved", message_recieved)
         return message_recieved
 
-
+    """
     def send_json_txt_file(self,  diff = 1, index_map = None, turn = 0, visual = None):
-        """
+        
         A function for turning a message into bytes and then sending it,
         the message has to be converted at the destination, e.g str(message, 'utf-8').
-        """ 
-        with open("../board.txt") as f:
+        
+        with open("board.json") as f:
             board = f.readline().split(" ")
-        message = {"board":board, "diff":diff, "index_map":index_map, "turn":0, "visual":visual}
+        message = {"Board":board, "Difficulty":diff, "Index_map":index_map, "Turn":0, "Visual":visual}
         message_json = json.dumps(message)
         message_json_b = bytes(message_json, 'utf-8')            # Convert the message to bytes
         print(message_json_b)
         self.socket.send(message_json_b)           # Send the game state/move
         print("Message sent!")
+    """
 
     def make_move(self, board, turn, difficulty):
         """
         Function to be called when playing a Player vs AI game
         """
-        board, difficulty = self.decode(board, difficulty)
+        board, difficulty = self.decode({"Board":board, "Difficulty":difficulty})
         self.send([board, difficulty, turn])
         board, difficulty = self.recv()
         return board, difficulty
 
 
-    def decode(self, board, difficulty):
+    def decode(self, byte_msg):
         """
         Function for decoding the information that is to be sent to the 
         game engine.
         """
-        return board, difficulty
+        decoded_msg = json.loads(byte_msg.decode('utf-8'))
+        return decoded_msg
 
     def close(self):
         """

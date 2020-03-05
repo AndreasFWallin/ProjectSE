@@ -1,7 +1,8 @@
 # Import socket module 
 import socket
 import json   
-import GameEngine12             
+import GameEngine12   
+import ast          
 
 class Server():
     def __init__(self, address, port=3005):
@@ -50,17 +51,34 @@ class Server():
 
 
 if __name__ == "__main__":
-    serv = Server('192.168.0.101')
+    print("hello")
+    serv = Server('192.168.0.102')
     msg = None
     while (True):
+        
         serv.accept()
-        msg = serv.recv()
+        byte_msg = serv.recv()
+        msg = json.loads(byte_msg.decode('utf-8'))
+        msg["Board"] = {x:y for x,y in enumerate(msg["Board"],0)}
+        #msg = byte_msg.decode('utf8').replace("'", '"')
+        
+        print(msg)
+        # msg = {int(k):v for k,v in msg["Board"].items()}
+        
+        if msg == "end":
+            break
         with open('board.json', 'w', encoding='utf-8') as f:
             json.dump(msg, f)
         GameEngine12.runUUGame('board.json')
         with open ('board.json', 'r', encoding='utf-8') as f:
-            msg = json.load(f)
-        serv.send(msg)
+            ai_msg = json.load(f)
+        keys = list(msg['Board'].keys())
+        print("Keys", keys)
+        # json_ai_msg = json.dumps(ai_msg)
+        ai_msg = json.dumps(ai_msg)
+        print(ai_msg)
+        byte_ai_msg = bytes(ai_msg, encoding='utf-8')
+        serv.send(byte_ai_msg)
     serv.close()
 
 
