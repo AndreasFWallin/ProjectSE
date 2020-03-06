@@ -36,12 +36,12 @@ class ProjectSE:
         print("Welcome to the UU-game press 'T' to start tournament, 'S' for single or 'Q' to quit")
         while True:
             key_hit = input()
-            if (key_hit == 'T'):
+            if (key_hit == 'T' or 't'):
                 return "Tournament"
-            elif (key_hit == 'S'):
+            elif (key_hit == 'S' or 's'):
                 print("Singleplayer!")
                 return "Single"
-            elif (key_hit == 'Q'):
+            elif (key_hit == 'Q' or 'q'):
                 print("See you next time!")
                 return "Quit"
             else:
