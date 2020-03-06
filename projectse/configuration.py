@@ -50,7 +50,7 @@ class ConfigurationBuilder:
             x = self.get_input(msg)
             if x in chars:
                 ok = True
-                return x
+                return x.upper()
             else:
                 self.print_out(err_msg)
 
@@ -75,7 +75,7 @@ class ConfigurationBuilder:
         if num_ai_player > 0:
             print("To select High difficulty use: 'H'. Medium: 'M'. Low: 'L' ")
         for ai_player in range(num_ai_player):
-            diff = self.get_char_input("Set difficulty for AI player,#{} ".format(ai_player+1), ["H", "M", "L"])
+            diff = self.get_char_input("Set difficulty for AI player,#{} ".format(ai_player+1), ["H","h","M","m","L","l"])
             player_list.append(AIPlayer("AIPlayer"+str(ai_player+1)+diff, self.parse_difficulty(diff)))
         print("The name(s) input needs to be unique and no longer than 7 characters.")
         for human_player in range(total_players-num_ai_player):
