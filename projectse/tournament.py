@@ -175,7 +175,7 @@ class Tournament:
                    self.winner == player
                    self.most_wins = player.wins
                 elif match.winner== None:
-                    if self.winner.white_played < player.white_played:
+                    if self.winner.white_wins < player.white_wins:
                         self.winner=player
                     
         print("The winner is ", self.winner.name,   " with ", self.winner.wins, " wins")
