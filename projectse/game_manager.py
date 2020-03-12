@@ -1,13 +1,13 @@
 import socket
 import json
-from configuration import * 
+from projectse.configuration import *
 
 class BoardState:
     def __init__(self):
         self.finished = False
         self.is_draw = False
         self.turn = 0
-        self.difficulty = None
+        self.difficulty = 0
         
         self.index_map = {
             "A": " 0------- 1------- 2",
@@ -45,7 +45,7 @@ class BoardState:
         self.turn = 0
         self.board = {}
         for i in range(24):
-            board.update({str(i): -1})
+            self.board.update({str(i): -1})
 
     def is_finished(self):
         return self.finished
@@ -157,12 +157,12 @@ class GameManager:
         print("Message sent!")
     """
 
-    def make_move(self, board, player, turn, difficulty):
+    def make_move(self, board ):
         """
         Function to be called when playing a Player vs AI game
         """
         print("move initiated")
-        self.send_json(board, difficulty, turn=turn)
+        self.send_json(board, board.difficulty, turn=board.turn)
         message = self.recv_json()
         board = message["Board"]
         return board
