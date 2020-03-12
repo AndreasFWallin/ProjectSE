@@ -52,7 +52,7 @@ class Server():
 
 if __name__ == "__main__":
     print("hello")
-    serv = Server('192.168.0.102')
+    serv = Server('192.168.0.101')
     msg = None
     while (True):
         

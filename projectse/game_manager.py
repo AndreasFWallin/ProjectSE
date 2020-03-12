@@ -35,7 +35,7 @@ class GameManager:
         """
         self.socket = socket.socket()           # Allocating a socket 
 
-    def connect(self,ip_adress='130.243.135.211', port=3005):
+    def connect(self,ip_adress='192.168.0.101', port=3005):
         self.socket.connect((ip_adress, port))  # Connecting the socket to a server, given an ip and port
         print("Connection to server established")
 
