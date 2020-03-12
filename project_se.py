@@ -6,6 +6,7 @@ from projectse.configuration import *
 from projectse.game_manager import *
 from projectse.tournament import *
 
+
 class MockPlatform:
 
     def initialize(self):
