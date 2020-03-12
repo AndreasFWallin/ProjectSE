@@ -35,7 +35,7 @@ class GameManager:
         """
         self.socket = socket.socket()           # Allocating a socket 
 
-    def connect(self,ip_adress='192.168.0.102', port=3005):
+    def connect(self,ip_adress='130.243.135.211', port=3005):
         self.socket.connect((ip_adress, port))  # Connecting the socket to a server, given an ip and port
         print("Connection to server established")
 
@@ -76,7 +76,7 @@ class GameManager:
         the message has to be converted at the destination, e.g str(message, 'utf-8').
         """ 
         message = {"Board":board, "Difficulty":diff, "Index Map":index_map,
-                 "Turn":0, "Visual":visual, "Player":player}
+                 "Turn":turn, "Visual":visual, "Player":player}
         message_json = json.dumps(message)
         message_json_b = bytes(message_json, 'utf-8')            # Convert the message to bytes
         print(message_json_b)
@@ -113,14 +113,18 @@ class GameManager:
         print("Message sent!")
     """
 
-    def make_move(self, board, turn, difficulty):
+    def make_move(self, board, turn, difficulty, player):
         """
         Function to be called when playing a Player vs AI game
         """
-        board, difficulty = self.decode({"Board":board, "Difficulty":difficulty})
-        self.send([board, difficulty, turn])
-        board, difficulty = self.recv()
-        return board, difficulty
+       # board, difficulty = self.decode({"Board":board, "Difficulty":difficulty})
+        self.send_json(board=board, turn=turn, diff=difficulty, player=player)
+        msg = self.recv_json()
+        board = msg["Board"]
+        turn = msg["Turn"]
+        difficulty = msg["Difficulty"]
+        player = msg["Player"]
+        return board, turn, difficulty, player
 
 
     def decode(self, byte_msg):
