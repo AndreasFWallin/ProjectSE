@@ -3,27 +3,67 @@ import json
 from configuration import * 
 
 class BoardState:
-
-    def __init__(self, board, turn, difficulty):
+    def __init__(self):
         self.finished = False
-        # Example 7x7 array
-        self.board = [[0 for i in range(7)] for x in range(7)]
-        # self.board = board
-        self.turn = turn
-        self.difficulty = difficulty
-
+        self.is_draw = False
+        self.turn = 0
+        self.difficulty = None
+        
+        self.index_map = {
+            "A": " 0------- 1------- 2",
+            "B": " |        |        |",
+            "C": " |  8---- 9----10  |",
+            "D": " |  |     |     |  |",
+            "E": " |  | 16-17-18  |  |",
+            "F": " |  | |      |  |  |",
+            "G": " 7-15-23    19-11- 3",
+            "H": " |  | |      |  |  |",
+            "I": " |  | 22-21-20  |  |",
+            "J": " |  |     |     |  |",
+            "K": " | 14----13----12  |",
+            "L": " |        |        |",
+            "M": " 6------- 5------- 4"
+        }
+        
+        self.visual = {
+            "A": " ----- ----- ",
+            "B": "|     |     |",
+            "C": "|  --- ---  |",
+            "D": "| |   |   | |",
+            "E": "| |  - -  | |",
+            "F": "| | |   | | |",
+            "G": " - -     - - ",
+            "H": "| | |   | | |",
+            "I": "| |  - -  | |",
+            "J": "| |   |   | |",
+            "K": "|  --- ---  |",
+            "L": "|     |     |",
+            "M": " ----- ----- "
+        }
+        
+        self.player = 0
+        self.turn = 0
+        self.board = {}
+        for i in range(24):
+            board.update({str(i): -1})
 
     def is_finished(self):
         return self.finished
 
-    def ai_turn(self, player):
-        if isinstance(player, AIPlayer):
-            return True
-        return False
+    def get_player_color(self):
+        if self.turn % 2 == 0:
+            return "Black"
+        else:
+            return "White"
 
-    def get_winner(self):
-        return "Black"
+    def set_difficulty(self, difficulty):
+        this.difficulty = difficulty
 
+    def set_finished(self):
+        self.finished = True
+
+    def set_draw(self):
+        self.is_draw = True
 
 """ Proxy module which handles the communication between Game Engine and Game Platform modules """
 
