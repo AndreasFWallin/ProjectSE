@@ -6,6 +6,7 @@ from projectse.configuration import *
 from projectse.game_manager import *
 from projectse.tournament import *
 
+
 class MockPlatform:
 
     def initialize(self):
@@ -40,6 +41,12 @@ class MockPlatform:
         print("Setting up platform with player infos")
 
         return None
+
+    def get_player(self, color):
+        if color=="black":
+            return ("CPU", "L")
+        else:
+            return ("Olle","")
 
 
 class ProjectSE:
@@ -82,7 +89,10 @@ class ProjectSE:
                     self.play_tournament(tournament)
                     retry = tournament.ask_retry()
             elif choice == "Single":
-                self.play_match()
+                black_tup = self.platform.get_player("white")
+                white_tup = self.platform.get_player("black")
+                match = self.cb.create_match(black_tup,white_tup)
+                self.play_match(match)
             else:
                 raise NotImplementedError("No such choice")
             # choice = self.platform.get_menu_choice()
@@ -123,17 +133,17 @@ class ProjectSE:
         self.setup_platform(match)
         board_state = BoardState() # Initialize an empty board
         while not board_state.is_finished():
-            if board_state.ai_turn():
+            current_player = match.get_player_by_color(board_state.get_player_color())
+            if current_player.is_ai():
                 board_state = self.game_mgr.make_move(board_state)
-            board_state = self.platform.play(board_state)
-        winner = board_state.get_winner()
-        if winner == "Black":
-            return match.get_black_player()
-        elif winner == "White":
-            return match.get_white_player()
-        else:
-            # It's a draw!
+            else:
+                board_state = self.platform.play(board_state)
+        # We have either a winner or a tie now
+        if board_state.is_draw():
             return None
+        else:
+            winner = match.get_player_by_color(board_state.get_player_color())
+            return winner
 
     def main_loop(self):
         print("Get ready to rumble!!!")

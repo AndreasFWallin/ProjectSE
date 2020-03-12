@@ -1,5 +1,6 @@
 
 from projectse.player import *
+from projectse.round import Match
 """ Configuration module from which user-input will define properties for a tournament"""
 
 class Configuration:
@@ -39,6 +40,34 @@ class ConfigurationBuilder:
 
             except ValueError:
                 self.print_out(err_msg)
+
+    def create_match(self, black: (str,str), white):
+        """
+        ai-difficulty = "": not an ai, L: easy, M: medium, H: difficult
+
+        :param black: tuple (Str playername, Str ai-difficulty)
+        :param white: tuple (Str playername, Str ai-difficulty)
+        :return m: Match with the two players
+        """
+        black_diff = self.parse_difficulty(black[1])
+        black_name = black[0]
+        white_diff = self.parse_difficulty(white[1])
+        white_name = white[0]
+
+        if black_diff!="":
+            black_player = AIPlayer(black_name, black_diff)
+        else:
+            black_player = Player(black_name)
+        if white_diff!="":
+            white_player = AIPlayer(white_name, white_diff)
+        else:
+            white_player = Player(white_name)
+
+        match = Match(white_player, black_player)
+
+        return match
+
+
 
     def print_out(self, msg):
         print(msg)
