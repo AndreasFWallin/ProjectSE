@@ -33,14 +33,14 @@ class MockPlatform:
         board.finished = True
         return board
 
-    def setup(self, match):
+    def setup(self, black_name, white_name):
         """ Called by ProjectSE to let the platform initialize a new match with settings from
         a Match-instance, that is, player names, player types (Human/AI);player color.
 
          returns: None """
         print("Setting up platform with player infos")
 
-        return None
+        return BoardState()
 
     def get_player(self, color):
         if color=="black":
@@ -102,7 +102,7 @@ class ProjectSE:
 
     def setup_platform(self, match):
         """ Interface to Platform to set type of players and names """
-        self.platform.setup(match)
+        return self.platform.setup(match.get_black_player_name(),match.get_white_player_name())
 
     def play_tournament(self, tournament):
         """ Decides and makes call to start the matches inside all rounds of the tournament sequentially
@@ -130,8 +130,7 @@ class ProjectSE:
         information about the match and then playing until the match is finished.
         return : Winning player is returned, if draw None is returned.
         """
-        self.setup_platform(match)
-        board_state = BoardState() # Initialize an empty board
+        board_state = self.setup_platform(match)
         while not board_state.is_finished():
             current_player = match.get_player_by_color(board_state.get_player_color())
             if current_player.is_ai():
