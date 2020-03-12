@@ -138,14 +138,12 @@ class ProjectSE:
                 board_state = self.game_mgr.make_move(board_state)
             else:
                 board_state = self.platform.play(board_state)
-        winner = board_state.get_winner()
-        if winner == "Black":
-            return match.get_black_player()
-        elif winner == "White":
-            return match.get_white_player()
-        else:
-            # It's a draw!
+        # We have either a winner or a tie now
+        if board_state.is_draw():
             return None
+        else:
+            winner = match.get_player_by_color(board_state.get_player_color())
+            return winner
 
     def main_loop(self):
         print("Get ready to rumble!!!")
