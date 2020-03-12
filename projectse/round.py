@@ -48,6 +48,16 @@ class Match:
         return "Now playing, {0} as white, versus {1} as black\n".format(self.get_white_player_name(), self.get_black_player_name())
         pass
 
+    def get_player_by_color(self,color:str):
+        color = color.lower()
+        if color == "black":
+            return self.black_player
+        elif color == "white":
+            return self.white_player
+        else:
+            raise NotImplementedError("color was not white or black!")
+
+
     def print_playing(self):
         print(self.get_playing_string())
 

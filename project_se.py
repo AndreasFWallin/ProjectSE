@@ -41,6 +41,12 @@ class MockPlatform:
 
         return None
 
+    def get_player(self, color):
+        if color=="black":
+            return ("CPU", "L")
+        else:
+            return ("Olle","")
+
 
 class ProjectSE:
     def __init__(self,cb=ConfigurationBuilder(),pltfrm=MockPlatform(),gm=GameManager()):
@@ -82,7 +88,10 @@ class ProjectSE:
                     self.play_tournament(tournament)
                     retry = tournament.ask_retry()
             elif choice == "Single":
-                self.play_match()
+                black_tup = self.platform.get_player("white")
+                white_tup = self.platform.get_player("black")
+                match = self.cb.create_match(black_tup,white_tup)
+                self.play_match(match)
             else:
                 raise NotImplementedError("No such choice")
             # choice = self.platform.get_menu_choice()
@@ -123,9 +132,11 @@ class ProjectSE:
         self.setup_platform(match)
         board_state = BoardState() # Initialize an empty board
         while not board_state.is_finished():
-            if board_state.ai_turn():
+            current_player = match.get_player_by_color(board_state.get_player_color())
+            if current_player.is_ai():
                 board_state = self.game_mgr.make_move(board_state)
-            board_state = self.platform.play(board_state)
+            else:
+                board_state = self.platform.play(board_state)
         winner = board_state.get_winner()
         if winner == "Black":
             return match.get_black_player()
