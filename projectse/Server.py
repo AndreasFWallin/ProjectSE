@@ -27,6 +27,7 @@ class Server():
         """
         print("Move recieved")
         message = self.c.recv(1024)
+        print(message)
         return message
 
     def send(self, message):

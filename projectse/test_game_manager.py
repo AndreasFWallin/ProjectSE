@@ -66,7 +66,7 @@ class TestGameManager(unittest.TestCase):
             old_board = message_board
 
             start_high = time.time()
-            message_board = gm.make_move(message_board, turn=turn, player=0, difficulty=2)
+            message_board = gm.make_move_test(message_board, turn=turn, player=0, difficulty=2)
             end_high = time.time()
             self.assertTrue(start_high-end_high < 600)
 
@@ -77,7 +77,7 @@ class TestGameManager(unittest.TestCase):
             gm.connect('192.168.0.101')
             
             start_low = time.time()
-            message_board = gm.make_move(message_board, turn=turn, player=1, difficulty=0)
+            message_board = gm.make_move_test(message_board, turn=turn, player=1, difficulty=0)
             
 
             self.assertTrue(start_high-end_high < 120)
