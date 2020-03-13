@@ -1,8 +1,7 @@
-
 class Round:
     """ A Gameround with responsibility for keeping track of the status of
     a single game round  """
-    def __init__(self, ):
+    def __init__(self):
         self.matches = []
         self.current_match_inx = 0
 
@@ -45,11 +44,12 @@ class Match:
     def only_ai(self):
         return self.black_player.is_ai() and self.white_player.is_ai()
 
+    def get_playing_string(self):
+        return "Now playing, {0} as white, versus {1} as black\n".format(self.get_white_player_name(), self.get_black_player_name())
+        pass
+
     def print_playing(self):
-        print("Now playing, ", self.get_white_player_name(),
-              " as white, versus ", self.get_black_player_name(),
-              "as black")
-        print()
+        print(self.get_playing_string())
 
     def get_winner_name(self):
         if self.played:
@@ -61,7 +61,6 @@ class Match:
 
     def is_played(self):
         return self.played
-
 
     def set_winner(self, player):
         self.played = True
@@ -78,6 +77,3 @@ class Match:
 
     def get_black_player_name(self):
         return self.black_player.name
-
-  
-  

@@ -10,24 +10,44 @@ from projectse.tournament import *
 class MockPlatform:
 
     def initialize(self):
-        return ""
+        """ Used to setup the Platform if necessary.
+        returns none """
+
+        return None
 
     def get_menu_choice(self):
+        """ Called by ProjectSE to make the Platform present a menu and gather user choice to decide what kind of
+         game to play: tournament, singleplayer, or simply quitting the application
+
+          returns: A single word string which corresponds to a legal choice. """
+
         return "Singleplayer"
 
-    def play(self,board):
+    def play(self, board):
+        """ Called by ProjectSE to let the Platform make operations on the BoardState-object and then return it once
+        it is finished with it (which occurs once it's the AI's turn to move OR match between humans is finished and there is a winner
+
+        Parameters: board - BoardState object on which to make a move
+
+        Returns: a BoardState object with the latest positions """
         board.finished = True
         return board
 
-    def setup(self,match):
+    def setup(self, match):
+        """ Called by ProjectSE to let the platform initialize a new match with settings from
+        a Match-instance, that is, player names, player types (Human/AI);player color.
+
+         returns: None """
         print("Setting up platform with player infos")
+
+        return None
 
 
 class ProjectSE:
-    def __init__(self):
-        self.cb = ConfigurationBuilder()
-        self.platform = MockPlatform()
-        self.game_mgr = GameManager()
+    def __init__(self,cb=ConfigurationBuilder(),pltfrm=MockPlatform(),gm=GameManager()):
+        self.cb = cb
+        self.platform = pltfrm
+        self.game_mgr = gm
         #TODO: wait with this, if no connection we cant play
         # self.game_mgr.connect()
 
@@ -76,6 +96,8 @@ class ProjectSE:
         self.platform.setup(match)
 
     def play_tournament(self, tournament):
+        """ Decides and makes call to start the matches inside all rounds of the tournament sequentially
+        Starting with the first rounds matches. AIvsAI matches are determined by chance """
         round = tournament.get_current_round()
         tournament.print_round()
         while round is not None:
@@ -97,10 +119,10 @@ class ProjectSE:
         """
         Used to play a game by first initializing the platform with
         information about the match and then playing until the match is finished.
-        Winning player is returned, if draw None is returned.
+        return : Winning player is returned, if draw None is returned.
         """
         self.setup_platform(match)
-        board_state = BoardState([-1]*24, difficulty, turn)
+        board_state = BoardState() # Initialize an empty board
         while not board_state.is_finished():
             if board_state.ai_turn(match.get_black_player()):
                 board_state = self.game_mgr.make_move(board_state)

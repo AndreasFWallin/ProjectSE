@@ -6,7 +6,9 @@ class BoardState:
 
     def __init__(self, board, turn, difficulty):
         self.finished = False
-        self.board = board
+        # Example 7x7 array
+        self.board = [[0 for i in range(7)] for x in range(7)]
+        # self.board = board
         self.turn = turn
         self.difficulty = difficulty
 
@@ -33,9 +35,10 @@ class GameManager:
         Sets up the connection, if the creation of the game manager doesn't work
         make sure you are on the same networ, have the same ip and port on server and manager
         """
+        print("init")
         self.socket = socket.socket()           # Allocating a socket 
 
-    def connect(self,ip_adress='192.168.0.101', port=3005):
+    def connect(self,ip_adress='192.168.0.101', port=3000):
         self.socket.connect((ip_adress, port))  # Connecting the socket to a server, given an ip and port
         print("Connection to server established")
 
@@ -88,7 +91,9 @@ class GameManager:
         """
         A function for recieving a message 
         """
+        print("recv init")
         message_recieved = self.socket.recv(1024)
+        print("recieved")
         if dtype == "json":
             msg = json.loads(message_recieved.decode('utf-8'))
         else:
@@ -113,18 +118,34 @@ class GameManager:
         print("Message sent!")
     """
 
-    def make_move(self, board, turn, difficulty, player):
+    def make_move_more_data(self, board, turn, difficulty, player):
         """
         Function to be called when playing a Player vs AI game
         """
        # board, difficulty = self.decode({"Board":board, "Difficulty":difficulty})
         self.send_json(board=board, turn=turn, diff=difficulty, player=player)
         msg = self.recv_json()
+        msg = self.decode(msg)
         board = msg["Board"]
         turn = msg["Turn"]
         difficulty = msg["Difficulty"]
         player = msg["Player"]
         return board, turn, difficulty, player
+
+    def make_move(self, board, player, turn, difficulty):
+        """
+        Function to be called when playing a Player vs AI game
+        """
+        print("move initiated")
+        self.send_json(board, difficulty, turn=turn, player=player)
+        message = self.recv_json()
+        message = self.decode(message)
+        board_raw = message["Board"]
+        board_tuples = board_raw.items()
+        board = [position[1] for position in board_tuples]
+        print(message["Visual"])
+        return board
+
 
 
     def decode(self, byte_msg):
