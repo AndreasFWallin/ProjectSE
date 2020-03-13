@@ -53,11 +53,13 @@ class Server():
 
 if __name__ == "__main__":
     print("hello")
-    serv = Server('192.168.0.105')
+    serv = Server('192.168.0.101')
     msg = None
+    
     while (True):
-        
+        print("new loop")
         serv.accept()
+        
         byte_msg = serv.recv()
         msg = json.loads(byte_msg.decode('utf-8'))
         msg["Board"] = {x:y for x,y in enumerate(msg["Board"],0)}
@@ -74,7 +76,6 @@ if __name__ == "__main__":
         with open ('board.json', 'r', encoding='utf-8') as f:
             ai_msg = json.load(f)
         keys = list(msg['Board'].keys())
-        print("Keys", keys)
         # json_ai_msg = json.dumps(ai_msg)
         ai_msg = json.dumps(ai_msg)
         print(ai_msg)
