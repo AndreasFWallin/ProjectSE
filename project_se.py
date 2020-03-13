@@ -33,14 +33,20 @@ class MockPlatform:
         board.finished = True
         return board
 
-    def setup(self, match):
+    def setup(self, black_name, white_name):
         """ Called by ProjectSE to let the platform initialize a new match with settings from
         a Match-instance, that is, player names, player types (Human/AI);player color.
 
          returns: None """
         print("Setting up platform with player infos")
 
-        return None
+        return BoardState()
+
+    def get_player(self, color):
+        if color=="black":
+            return ("CPU", "L")
+        else:
+            return ("Olle","")
 
 
 class ProjectSE:
@@ -83,7 +89,10 @@ class ProjectSE:
                     self.play_tournament(tournament)
                     retry = tournament.ask_retry()
             elif choice == "Single":
-                self.play_match()
+                black_tup = self.platform.get_player("white")
+                white_tup = self.platform.get_player("black")
+                match = self.cb.create_match(black_tup,white_tup)
+                self.play_match(match)
             else:
                 raise NotImplementedError("No such choice")
             # choice = self.platform.get_menu_choice()
@@ -93,7 +102,7 @@ class ProjectSE:
 
     def setup_platform(self, match):
         """ Interface to Platform to set type of players and names """
-        self.platform.setup(match)
+        return self.platform.setup(match.get_black_player_name(),match.get_white_player_name())
 
     def play_tournament(self, tournament):
         """ Decides and makes call to start the matches inside all rounds of the tournament sequentially
@@ -121,25 +130,19 @@ class ProjectSE:
         information about the match and then playing until the match is finished.
         return : Winning player is returned, if draw None is returned.
         """
-        self.setup_platform(match)
-        board_state = BoardState() # Initialize an empty board
+        board_state = self.setup_platform(match)
         while not board_state.is_finished():
-            if board_state.ai_turn(match.get_black_player()):
+            current_player = match.get_player_by_color(board_state.get_player_color())
+            if current_player.is_ai():
                 board_state = self.game_mgr.make_move(board_state)
             else:
                 board_state = self.platform.play(board_state)
-            if board_state.ai_turn(match.get_white_player()):
-                board_state = self.game_mgr.make_move(board_state)
-            else:
-                board_state = self.platform.play(board_state)
-        winner = board_state.get_winner()
-        if winner == "Black":
-            return match.get_black_player()
-        elif winner == "White":
-            return match.get_white_player()
-        else:
-            # It's a draw!
+        # We have either a winner or a tie now
+        if board_state.is_draw():
             return None
+        else:
+            winner = match.get_player_by_color(board_state.get_player_color())
+            return winner
 
     def main_loop(self):
         print("Get ready to rumble!!!")

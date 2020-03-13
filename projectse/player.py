@@ -30,3 +30,6 @@ class AIPlayer(Player):
     def __init__(self, name, difficulty):
         self.difficulty = difficulty
         super().__init__(name)
+
+    def is_ai(self):
+        return True
