@@ -1,15 +1,15 @@
-# Import socket module 
+# Import socket module
 import socket
-import json   
-import GameEngine12   
-import ast          
+import json
+import GameEngine12
+import ast
 
 class Server():
     def __init__(self, address, port=3005):
-        # Create a socket object 
-        self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)    
-        
-        # connect to the server on local computer 
+        # Create a socket object
+        self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+        # connect to the server on local computer
         self.s.bind((address, port))
 
     def accept(self):
@@ -22,7 +22,7 @@ class Server():
     def recv(self):
         """
         Here the game engine waits for a message from the platform
-        :return: message, a json object 
+        :return: message, a json object
         """
         print("Move recieved")
         message = self.c.recv(1024)
@@ -35,7 +35,7 @@ class Server():
         """
         self.c.send(message)
         print("Move sent")
-    
+
     def close(self):
         self.c.close()
 
@@ -52,19 +52,19 @@ class Server():
 
 if __name__ == "__main__":
     print("hello")
-    serv = Server('192.168.0.102')
+    serv = Server('130.243.135.211')
     msg = None
     while (True):
-        
+
         serv.accept()
         byte_msg = serv.recv()
         msg = json.loads(byte_msg.decode('utf-8'))
         msg["Board"] = {x:y for x,y in enumerate(msg["Board"],0)}
         #msg = byte_msg.decode('utf8').replace("'", '"')
-        
+
         print(msg)
         # msg = {int(k):v for k,v in msg["Board"].items()}
-        
+
         if msg == "end":
             break
         with open('board.json', 'w', encoding='utf-8') as f:
@@ -80,6 +80,3 @@ if __name__ == "__main__":
         byte_ai_msg = bytes(ai_msg, encoding='utf-8')
         serv.send(byte_ai_msg)
     serv.close()
-
-
-
