@@ -1,6 +1,6 @@
 
-from projectse.player import *
-from projectse.round import Match
+from player import *
+from round import Match
 """ Configuration module from which user-input will define properties for a tournament"""
 
 class Configuration:
@@ -92,7 +92,7 @@ class ConfigurationBuilder:
 
     def query_settings(self):
         """ menu for dealing with adding all the players to the configuration """
-        """ First number of players, then number of human players, and then difficulty 
+        """ First number of players, then number of human players, and then difficulty
             for each AI-player """
         max_players = 8
         player_list = []
