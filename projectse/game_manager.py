@@ -1,6 +1,6 @@
 import socket
 import json
-from projectse.configuration import *
+from configuration import *
 
 class BoardState:
     def __init__(self):
@@ -8,7 +8,7 @@ class BoardState:
         self.is_draw = False
         self.turn = 0
         self.difficulty = 0
-        
+
         self.index_map = {
             "A": " 0------- 1------- 2",
             "B": " |        |        |",
@@ -24,7 +24,7 @@ class BoardState:
             "L": " |        |        |",
             "M": " 6------- 5------- 4"
         }
-        
+
         self.visual = {
             "A": " ----- ----- ",
             "B": "|     |     |",
@@ -40,7 +40,7 @@ class BoardState:
             "L": "|     |     |",
             "M": " ----- ----- "
         }
-        
+
         self.player = 0
         self.turn = 0
         self.board = {}
@@ -76,7 +76,7 @@ class GameManager:
         make sure you are on the same networ, have the same ip and port on server and manager
         """
         print("init")
-        self.socket = socket.socket()           # Allocating a socket 
+        self.socket = socket.socket()           # Allocating a socket
 
     def connect(self,ip_adress='192.168.0.101', port=3000):
         self.socket.connect((ip_adress, port))  # Connecting the socket to a server, given an ip and port
@@ -94,10 +94,10 @@ class GameManager:
         print(message_b)
         self.socket.send(message_b)           # Send the game state/move
         print("Message sent!")
-        
+
     def recv(self, dtype = "list"):
         """
-        A function for recieving a message and   turning it from bytes to 
+        A function for recieving a message and   turning it from bytes to
         list or string, depending on the input
         """
         message_recieved = self.socket.recv(1024)
@@ -117,7 +117,7 @@ class GameManager:
         """
         A function for turning a message into bytes and then sending it,
         the message has to be converted at the destination, e.g str(message, 'utf-8').
-        """ 
+        """
         message = {"Board":board, "Difficulty":diff, "Index Map":index_map,
                  "Turn":turn, "Visual":visual, "Player":player}
         message_json = json.dumps(message)
@@ -125,11 +125,11 @@ class GameManager:
         print(message_json_b)
         self.socket.send(message_json_b)           # Send the game state/move
         print("Message sent!")
-    
+
 
     def recv_json(self, dtype = "json"):
         """
-        A function for recieving a message 
+        A function for recieving a message
         """
         print("recv init")
         message_recieved = self.socket.recv(1024)
@@ -144,10 +144,10 @@ class GameManager:
 
     """
     def send_json_txt_file(self,  diff = 1, index_map = None, turn = 0, visual = None):
-        
+
         A function for turning a message into bytes and then sending it,
         the message has to be converted at the destination, e.g str(message, 'utf-8').
-        
+
         with open("board.json") as f:
             board = f.readline().split(" ")
         message = {"Board":board, "Difficulty":diff, "Index_map":index_map, "Turn":0, "Visual":visual}
@@ -185,7 +185,7 @@ class GameManager:
         board = [position[1] for position in board_tuples]
         print(message["Visual"])
         return board
-    
+
     def make_move(self, board):
         """
         Function to be called when playing a Player vs AI game
@@ -204,7 +204,7 @@ class GameManager:
 
     def decode(self, byte_msg):
         """
-        Function for decoding the information that is to be sent to the 
+        Function for decoding the information that is to be sent to the
         game engine.
         """
         decoded_msg = json.loads(byte_msg.decode('utf-8'))
@@ -216,4 +216,3 @@ class GameManager:
         """
         self.socket.close()
         print("Socket closed")
-
