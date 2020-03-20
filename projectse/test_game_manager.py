@@ -3,7 +3,7 @@ import sys
 sys.path.insert(0, r"C:\UU\VT20\SEPM\updated\ProjectSE")
 
 import unittest
-from projectse.game_manager import GameManager as GM
+from game_manager import GameManager as GM
 
 class TestGameManager(unittest.TestCase):
 
@@ -22,7 +22,7 @@ class TestGameManager(unittest.TestCase):
 
     def test_game_manager_json_server(self):
         """
-        Testing if the game_manager can connect to the server and the server can change the 
+        Testing if the game_manager can connect to the server and the server can change the
         """
         gm = GM()
         gm.connect()
@@ -35,6 +35,6 @@ class TestGameManager(unittest.TestCase):
         self.assertNotEqual(recv_msg["Board"], message_board)
         gm.close()
 
-    
+
 if __name__ == '__main__':
     unittest.main()
