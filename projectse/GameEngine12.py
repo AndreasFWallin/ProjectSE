@@ -469,14 +469,17 @@ def findNextMove(board,player,turn,depth,difficulty):
     bestMove=[]
     bestMoveVal=-100000000000000000
     currentMove=-1000000
+
     if turn==0:
         board[11]=1
         return board
     elif turn==1:
         for i in range(24):
+            print(board[i])
             if board[i]==0:
                 for pos in adjacentLocations(i):
                     if 7<pos and pos<16:
+                       
                         board[pos]=1
                         return board
     elif turn<18:
@@ -553,7 +556,9 @@ def readablePlayer(player):
 # writeOutputFile takes the current board state the the corresponding information
 # to write a .json output file. Also prints a visualization of the board in the file.
 def writeOutputFile(filename, board, player, turn, difficulty):
-
+    if turn%2 == 1:
+        
+        board = invert_board(board)
     data = {}
     data['Board'] = {x:y for x,y in enumerate(board,0)}
     data['Player'] = player

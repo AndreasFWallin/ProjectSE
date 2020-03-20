@@ -21,13 +21,13 @@ class ConfigurationBuilderTestCase(unittest.TestCase):
         # Sets names of AI players
         cb.get_input.side_effect = ["Kalle", "Emma", "Kim", "Olle","Ken"]
         cb.configure_players = MagicMock()
-        cb.query_players()
+        cb.query_settings()
         arg, kwargs = cb.configure_players.call_args
         players_list = arg[0]
-        player_names = ["AIPlayer1", "AIPlayer2", "AIPlayer3", "Kalle", "Emma", "Kim", "Olle","Ken"]
+        player_names = ["AIPlayer1H", "AIPlayer2M", "AIPlayer3L", "Kalle", "Emma", "Kim", "Olle","Ken"]
         for player,name in zip(players_list, player_names):
             print(str(player)+" name:"+str(name))
-            self.assertEqual(player.name,name)
+            self.assertEqual(name,player.name)
 
 if __name__ == '__main__':
     unittest.main()

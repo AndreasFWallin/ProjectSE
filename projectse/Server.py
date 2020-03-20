@@ -5,12 +5,13 @@ import GameEngine12
 import ast
 
 class Server():
-    def __init__(self, address, port=3005):
+    def __init__(self, address, port=3000):
         # Create a socket object
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         # connect to the server on local computer
         self.s.bind((address, port))
+        print("Set up for ip", address, " using port ", port)
 
     def accept(self):
         """
@@ -52,11 +53,13 @@ class Server():
 
 if __name__ == "__main__":
     print("hello")
-    serv = Server('130.243.135.211')
+    serv = Server('192.168.0.101')
     msg = None
-    while (True):
 
+    while (True):
+        print("new loop")
         serv.accept()
+
         byte_msg = serv.recv()
         msg = json.loads(byte_msg.decode('utf-8'))
         msg["Board"] = {x:y for x,y in enumerate(msg["Board"],0)}
@@ -73,7 +76,6 @@ if __name__ == "__main__":
         with open ('board.json', 'r', encoding='utf-8') as f:
             ai_msg = json.load(f)
         keys = list(msg['Board'].keys())
-        print("Keys", keys)
         # json_ai_msg = json.dumps(ai_msg)
         ai_msg = json.dumps(ai_msg)
         print(ai_msg)

@@ -1,49 +1,64 @@
 import unittest
-from projectse.round import Round, Match
-from projectse.player import Player
-from projectse.configuration import Configuration
+from projectse.round import Round
+from unittest.mock import MagicMock
 
 class RoundTestCase(unittest.TestCase):
 
   def test_create_round(self):
-    # Create players
-    player_one = Player("test1")
-    player_two = Player("test2")
-    player_three = Player("test3")
-    player_four = Player("test4")
+    player_mock_white_1 = MagicMock()
+    player_mock_white_1.get_name.return_value = "Hej"
+    player_mock_white_1.name = "test1"
 
-    # Create configuration
-    cfg = Configuration()
-    cfg.set_players([player_one, player_two, player_three, player_four])
+    player_mock_black_1 = MagicMock()
+    player_mock_black_1.get_name.return_value = "Hej"
+    player_mock_black_1.name = "test2"
 
-    # Create list of matches
-    matches = [(1,2), (3,4)]
+    player_mock_white_2 = MagicMock()
+    player_mock_white_2.get_name.return_value = "Hej"
+    player_mock_white_2.name = "test3"
+
+    player_mock_black_2 = MagicMock()
+    player_mock_black_2.get_name.return_value = "Hej"
+    player_mock_black_2.name = "test4"
+
+    match1 = MagicMock()
+    match1.white_player = player_mock_white_1
+    match1.get_white_player_name.return_value = player_mock_white_1.name
+    match1.get_black_player_name.return_value = player_mock_black_1.name
+    match1.black_player = player_mock_black_1
+    
+    match2 = MagicMock()
+    match2.white_player = player_mock_white_2
+    match2.get_white_player_name.return_value = player_mock_white_2.name
+    match2.get_black_player_name.return_value = player_mock_black_2.name
+    match2.black_player = player_mock_black_2
 
     # Create round
-    round = Round(matches, cfg)
-
-    # No match is currently being played
+    round = Round()
     self.assertEqual(None, round.get_current_match())
-    # No matches have been played yet
-    self.assertEqual([], round.get_played_matches())
-
-    # Set next match to be played
-    round.set_next_match()
-    # White player of first match is player_one
+    # Add first match 
+    round.add_match(match1)
+    # Assert there is only one match in the round
+    self.assertEqual(1, len(round.get_matches()))
+    # Assert no match is currently being played
+    self.assertEqual(match1, round.get_current_match())
+    # White player of first match is player_mock_white_1
     self.assertEqual("test1", round.get_current_match().get_white_player_name())
-    # Current match is only matched played so far
-    self.assertEqual([], round.get_played_matches())
+    # White player of first match is player_mock_black_1
+    self.assertEqual("test2", round.get_current_match().get_black_player_name())
 
-    round.set_next_match()
-    played_match = round.get_played_matches()[0]
-    self.assertEqual("test1", played_match.get_white_player_name())
-    self.assertEqual("test2", played_match.get_black_player_name())
+    # Add new match
+    round.add_match(match2)
+    # Assert there are two matches in the round
+    self.assertEqual(2, len(round.get_matches()))
+    # Set next match to be played
+    round.get_next_match()
+    # White player of first match is player_mock_white_2
+    self.assertEqual("test3", round.get_current_match().get_white_player_name())
+    # White player of first match is player_mock_black_2
+    self.assertEqual("test4", round.get_current_match().get_black_player_name())
 
-    current_match = round.get_current_match()
-    self.assertEqual("test3", current_match.get_white_player_name())
-    self.assertEqual("test4", current_match.get_black_player_name())
 
-    self.assertEqual([], round.get_unplayed_matches())
 
 if __name__ == '__main__':
   unittest.main()
